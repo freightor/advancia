@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" class="fp">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <title>Advancia</title>
+
+    <!-- Google font
+   <link href="https://fonts.googleapis.com/css?family=Hind:400,700" rel="stylesheet">-->
+
+    <!--Bootstrap-->
+    <link type="text/css" rel="stylesheet" href="{% static 'css/root.css' %}" />
+    <!-- <link type="text/css" rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"/> -->
+
+
+    <!-- Bee -->
+    <link type="text/css" rel="stylesheet" href="{% static 'css/bumble-bee.css' %}" />
+    <link type="text/css" rel="stylesheet" href="{% static 'css/form.min.css' %}" />
+
+
+    <link type="text/css" rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link type="text/css" rel="stylesheet" href="{% static 'css/login.css' %}" />
+    <!---->
+
+
+</head>
+
+<body class="fp">
+
+    <section class="container abs fp">
+        <a href="#">
+            <div class="w70 h70 pd5 abs abs ctr-h top40 adv-logo zi10 rc50p hov-bg-clr9 cur-ptr"></div>
+        </a>
+        <div class="fph5 fpv4 clr2 ctr-hv zi45 npe cur-ptr">
+            <h2 class="ctr clr2 fts46"> BUY NOW, PAY LATER!</h2>
+
+            <div class="ctr-h">
+                <a href="http://localhost:8000/accounts/signup/employer/" target="blank">
+                    <button class="w150 h45 rc25 pd10 bg-clr9 clr2 m0a fts20 pe cur-ptr mt30 mr10">Employer</button>
+                </a>
+                <a href="http://localhost:8000/accounts/signup/merchant/" target="blank">
+                    <button class="w150 h45 rc25 pd10 bg-clr9 clr2 m0a fts20  pe cur-ptr mt30 ml10">Merchant</button>
+                </a>
+            </div>
+
+        </div>
+        <div id="testimonyContainer" class="fp testimonials swipe">
+            <div class="fp swipe-wrap rltv oh">
+                <!--<div class="fp testimonial">
+         </div>-->
+                <div class="fp testimonial bg-clr14">
+                </div>
+                <div class="fp testimonial bg-clr8">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="{% static 'js/base.js' %}"></script>
+
+    <script src="{% static 'js/Barge.DomCore.js' %}"></script>
+    <script src="{% static 'js/Barge.Events.js' %}"></script>
+
+    <script src="{% static 'js/Carousel.js' %}"></script>
+
+    <script>
+        Bee.Widget.Carousel("#testimonyContainer", {
+            auto: 3000,
+            draggable: true,
+            autoRestart: true,
+            continuous: true,
+            disableScroll: true,
+            stopPropagation: true
+        });
+    </script>
+</body>
+
+</html>

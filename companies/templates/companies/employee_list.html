@@ -1,0 +1,32 @@
+{% extends "employer_base.html" %}
+{% block title %}Employees{% endblock %} 
+{% block content %}
+<table class="table table-stripped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Salary</th>
+            <th>Employee No</th>
+            <th>Email</th>
+            <th>Role</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for employee in employees %}
+            <tr>
+                <td>{{employee.user.get_full_name}}</td>
+                <td>{{employee.salary}}</td>
+                <td>{{employee.employee_no}}</td>
+                <td>{{employee.user.email}}</td>
+                <td>
+                    {% if employee.role == "admin" %}
+                        <span class="badge badge-success">{{employee.role}}</span>
+                    {% else %}
+                        <span class="badge badge-danger">{{employee.role}}</span>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

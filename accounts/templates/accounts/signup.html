@@ -1,0 +1,30 @@
+{% extends "accounts.html" %} 
+{% load static %} 
+{% load widget_tweaks %} 
+{% block title %} Login {% endblock %} 
+{% block content %}
+<div class="fp">
+    <div class="w400 fpv7 m0a mt5p rc8 bg-clr2">
+        <div class="fph h150 mtb10">
+            <div class="hw150 m0a pd30">
+                <div class=" m0a fp">
+                    <img src="{% static 'img/Advancia-nkd.png' %}" alt="Advancia_Logo" class="fp ctr ac">
+                </div>
+            </div>
+        </div>
+        <div class="fph">
+            <form method="POST" class="pdtb20 pdlr40">
+                {% include "form.html" %}
+                <div class="fph ac">
+                    <button type="submit" class="pdlr10p pdtb10 rc20 m0a">Sign Up</button>
+                </div>
+                <div class="pdt30">
+                    <p>
+                        <a href="{% url 'accounts:login' %}">Have an account? Sign In</a>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

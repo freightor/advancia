@@ -1,0 +1,1 @@
+web: gunicorn advancia.wsgi --log-file -
