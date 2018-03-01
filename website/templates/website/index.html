@@ -41,10 +41,10 @@
             <h2 class="ctr clr2 fts46"> BUY NOW, PAY LATER!</h2>
 
             <div class="ctr-h">
-                <a href="http://localhost:8000/accounts/signup/employer/" target="blank">
+                <a href="{% url 'accounts:signup' user_type='employer' %}" target="blank">
                     <button class="w150 h45 rc25 pd10 bg-clr9 clr2 m0a fts20 pe cur-ptr mt30 mr10">Employer</button>
                 </a>
-                <a href="http://localhost:8000/accounts/signup/merchant/" target="blank">
+                <a href="{% url 'home' %}" target="blank">
                     <button class="w150 h45 rc25 pd10 bg-clr9 clr2 m0a fts20  pe cur-ptr mt30 ml10">Merchant</button>
                 </a>
             </div>
