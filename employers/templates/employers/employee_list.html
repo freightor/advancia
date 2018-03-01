@@ -10,14 +10,6 @@
             <div class="col-xs-8 text-right m-b-30">
                 <a href="{% url 'employers:new_employee' %}" class="btn btn-primary pull-right rounded">
                     <i class="fa fa-plus"></i> Add Employee</a>
-                <div class="view-icons">
-                    <a href="employees.html" class="grid-view btn btn-link">
-                        <i class="fa fa-th"></i>
-                    </a>
-                    <a href="employees-list.html" class="list-view btn btn-link active">
-                        <i class="fa fa-bars"></i>
-                    </a>
-                </div>
             </div>
         </div>
         <div class="row filter-row">
@@ -59,7 +51,7 @@
                                 <th>Employee ID</th>
                                 <th>Department</th>
                                 <th>Mobile</th>
-                                <th>Salary</th>
+                                <th>Status</th>
                                 <th class="text-right">Action</th>
                             </tr>
                         </thead>
@@ -69,7 +61,7 @@
                                     <td>
                                         <a href="{% url 'employers:employee_detail' pk=employee.pk %}" class="avatar">{{employee.first_name|first}}</a>
                                         <h2>
-                                            <a href="{% url 'employers:employee_detail' pk=employee.pk %}">{{employee.get_full_name}}
+                                            <a href="{% url 'employers:employee_detail' pk=employee.pk %}">{{employee.name}}
                                                 <span>{{employee.role}}</span>
                                             </a>
                                         </h2>
@@ -77,6 +69,7 @@
                                     <td>{{employee.employee_no}}</td>
                                     <td>{{employee.workdetail.department}}</td>
                                     <td>{{employee.address.phone}}</td>
+                                    <td>{{employee.active}}</td>
                                     <td>{{employee.paymentdetail.salary}}</td>
                                     <td class="text-right">
                                         <div class="dropdown">
@@ -91,6 +84,15 @@
                                                 <li>
                                                     <a href="#" data-toggle="modal" data-target="#delete_employee">
                                                         <i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                                </li>
+                                                <li>
+                                                    {% if employee.active %}
+                                                    <a href="{% url 'employers:activate_employee' pk=employee.pk %}">
+                                                        <i class="fa fa-cross m-r-5"></i> Deactivate</a>
+                                                    {% else %}
+                                                    <a href="{% url 'employers:activate_employee' pk=employee.pk %}">
+                                                        <i class="fa fa-tick m-r-5"></i> Activate</a>
+                                                    {% endif %}
                                                 </li>
                                             </ul>
                                         </div>
