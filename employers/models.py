@@ -69,6 +69,12 @@ class Employee(BaseModel):
     marital_status = models.CharField(max_length=10,choices=MARITAL_STATUS_CHOICES, null=True,blank=True)
     address = models.ForeignKey(Address,on_delete=models.SET_NULL, null=True,blank=True)
 
+    @property
+    def name(self):
+        if self.middle_name:
+            return "{0} {1} {2}".format(self.first_name,self.middle_name,self.last_name)
+        return "{0} {1}".format(self.first_name, self.last_name)
+
 
 class WorkDetail(models.Model):
     employee = models.OneToOneField(Employee, on_delete=models.CASCADE)
@@ -78,8 +84,9 @@ class WorkDetail(models.Model):
         null=True, blank=True, max_digits=12, decimal_places=2)
     employee_no = models.CharField(
         max_length=30, unique=True, null=True, blank=True)
-    date_of_employment = models.DateField()
-    social_security_no = models.CharField(max_length=50, unique=True)
+    date_of_employment = models.DateField(null=True, blank=True)
+    social_security_no = models.CharField(
+        max_length=50, unique=True, null=True, blank=True)
 
 
 class PaymentDetail(models.Model):

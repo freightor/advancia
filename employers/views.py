@@ -24,7 +24,7 @@ def new_employee(request):
             employee.employer = employer
             employee.address = addr.save()
             employee.save()
-            return redirect("employers:employee_detail")
+            return redirect("employers:employee_detail", pk=employee.pk)
     else:
         form = EmployeeForm(prefix="employee")
         addr = AddressForm(prefix="addr")
@@ -48,6 +48,10 @@ def edit_employee(request, pk):
         addr = AddressForm(instance=obj.address, prefix="addr")
     return render(request, "employers/new_employee.html", {"form": form, "addr": addr})
 
+def employee_detail(request,pk):
+    employer = request.user.administrator.employer
+    employee = get_object_or_404(Employee.objects.filter(employer=employer))
+    return render(request,"employers/employee_detail.html",{"employee":employee})
 
 def new_employer(request):
     if request.method == "POST":
