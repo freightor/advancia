@@ -54,13 +54,13 @@ def edit_employee(request, pk):
 
 def employee_detail(request, pk):
     employer = request.user.administrator.employer
-    employee = get_object_or_404(Employee.objects.filter(employer=employer))
+    employee = get_object_or_404(Employee.objects.filter(employer=employer),pk=pk)
     return render(request, "employers/employee_detail.html", {"employee": employee})
 
 
 def activate_employee(request, pk):
     employer = request.user.administrator.employer
-    employee = get_object_or_404(Employee.objects.filter(employer=employer))
+    employee = get_object_or_404(Employee.objects.filter(employer=employer),pk=pk)
     if employee.active:
         employee.active = False
     else:
