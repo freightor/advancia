@@ -9,13 +9,13 @@ from companies.forms import EmployerForm
 
 
 def employee_list(request):
-    employer = request.user.employee.employer
+    employer = request.user.administrator.employer
     queryset = Employee.objects.filter(employer=employer)
     return render(request, "companies/employee_list.html", {"employees": queryset})
 
 
 def new_employee(request):
-    employer = request.user.employee.employer
+    employer = request.user.administrator.employer
     if request.method == "POST":
         form = ProfileForm(request.POST)
         if form.is_valid():

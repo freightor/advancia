@@ -6,13 +6,11 @@ from common.models import BaseModel
 
 
 class Profile(models.Model):
+    """
+    Abstract Base Class for individuals in an employee with Login abilities
+    """
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     avatar = models.ImageField(null=True, blank=True)
-    user_types_choices = (
-        ("merchant", "Merchant"),
-        ("employee", "Employee")
-    )
-    user_type = models.CharField(max_length=10, choices=user_types_choices)
     role_choices = (
         ("admin", "Admin"),
         ("regular", "Regular")
