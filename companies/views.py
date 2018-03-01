@@ -1,9 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
-from companies.models import Employee, Employer
-from accounts.forms import ProfileForm
-from companies.forms import AddressForm
-from companies.forms import EmployerForm
+from companies.models import Employee, Employer, WorkDetail,PaymentDetail
+from companies.forms import AddressForm, EmployeeForm, EmployerForm, DepartmentForm
 
 # Create your views here.
 
@@ -17,29 +15,37 @@ def employee_list(request):
 def new_employee(request):
     employer = request.user.administrator.employer
     if request.method == "POST":
-        form = ProfileForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            new_guy = Employee(user=user, employer=employer,
-                               user_type="employee")
-            new_guy.created_by = request.user
-            new_guy.save()
+        form = EmployeeForm(request.POST,prefix="employee")
+        addr = AddressForm(request.POST, prefix="addr")
+        if form.is_valid() and addr.is_valid():
+            employee = form.save(commit=False)
+            employee.created_by = request.user
+            employee.employer = employer
+            employee.address = addr.save()
+            employee.save()
             return redirect("companies:employee_detail")
     else:
-        form = ProfileForm()
-    return render(request, "companies/new_employee.html", {"form": form})
+        form = EmployeeForm(prefix="employee")
+        addr = AddressForm(prefix="addr")
+    return render(request, "companies/new_employee.html", {"form": form, "addr": addr})
 
 
 def edit_employee(request, pk):
-    obj = get_object_or_404(User, pk=pk)
+    employer = request.user.administrator.employer
+    obj = get_object_or_404(Employee.objects.filter(employer=employer), pk=pk)
     if request.method == "POST":
-        form = ProfileForm(request.POST, instance=obj)
-        if form.is_valid():
-            form.save()
+        form = EmployeeForm(request.POST, instance=obj,prefix="employee")
+        addr = AddressForm(request.POST, instance=obj.address,prefix="addr")
+        if form.is_valid() and addr.is_valid():
+            employee = form.save(commit=False)
+            employee.edited_by = request.user
+            addr.save()
+            employee.save()
             return redirect("companies:employee_detail", pk=pk)
     else:
-        form = ProfileForm(instance=obj)
-    return render(request, "companies/new_employee.html", {"form": form})
+        form = EmployeeForm(instance=obj, prefix="employee")
+        addr = AddressForm(instance=obj.address, prefix="addr")
+    return render(request, "companies/new_employee.html", {"form": form, "addr": addr})
 
 
 def new_employer(request):
@@ -48,15 +54,12 @@ def new_employer(request):
         addr = AddressForm(request.POST, prefix="addr")
         if form.is_valid() and addr.is_valid():
             employer = form.save(commit=False)
-            address = addr.save(commit=False)
-            address.created_by = request.user
-            address.save()
-            employer.address = address
+            employer.address = addr.save()
             employer.created_by = request.user
             employer.save()
-            employee = request.user.employee
-            employee.employer = employer
-            employee.save()
+            administrator = request.user.administrator
+            administrator.employer = employer
+            administrator.save()
             return redirect("companies:employee_list")
     else:
         form = EmployerForm(prefix="employer")
@@ -65,20 +68,31 @@ def new_employer(request):
 
 
 def edit_employer(request):
-    obj = request.user.employee.employer
+    obj = request.user.administrator.employer
     if request.method == "POST":
-        form = EmployerForm(request.POST, request.FILES,
-                            instance=obj, prefix="employer")
+        form = EmployerForm(request.POST, request.FILES,instance=obj, prefix="employer")
         addr = AddressForm(request.POST, instance=obj.address, prefix="addr")
         if form.is_valid() and addr.is_valid():
             employer = form.save(commit=False)
-            address = addr.save(commit=False)
-            address.edited_by = request.user
-            address.save()
             employer.edited_by = request.user
             employer.save()
+            addr.save()
             return redirect("companies:employee_list")
     else:
-        form = EmployerForm(prefix="employer")
-        addr = AddressForm(prefix="addr")
+        form = EmployerForm(prefix="employer",instance=obj)
+        addr = AddressForm(prefix="addr",instance=obj.address)
     return render(request, "companies/new_company.html", {"form": form, "addr": addr})
+
+def new_department(request):
+    employer = request.user.administrator.employer
+    if request.method == "POST":
+        form = DepartmentForm(request.POST)
+        if form.is_valid():
+            dept = form.save(commit=False)
+            dept.created_by = request.user
+            dept.employer = employer
+            dept.save()
+            return redirect("companies:dept_list")
+    else:
+        form = DepartmentForm()
+    return render(request,"companies/dept_list.html",{"form":form})

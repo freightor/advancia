@@ -1,6 +1,8 @@
 import os
 import uuid
 from django.db import models
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 from common.models import BaseModel
 from accounts.models import Profile
@@ -30,6 +32,9 @@ class Employer(BaseModel):
     address = models.ForeignKey(Address, on_delete=models.CASCADE)
     description = models.TextField()
 
+class JobTitle(models.Model):
+    name = models.CharField(max_length=255)
+    company = models.ForeignKey(Employer, on_delete=models.CASCADE)
 
 class Department(BaseModel):
     name = models.CharField(max_length=200)
@@ -46,6 +51,9 @@ class Employee(BaseModel):
     first_name = models.CharField(max_length=50)
     middle_name = models.CharField(max_length=50, null=True, blank=True)
     last_name = models.CharField(max_length=50)
+    employer = models.ForeignKey(
+        Employer, on_delete=models.CASCADE, null=True, blank=True)
+    role = models.ForeignKey(JobTitle,on_delete=models.SET_NULL,null=True,blank=True)
     date_of_birth = models.DateField()
     GENDER_CHOICES = (
         ("M", "Male"),
@@ -60,6 +68,7 @@ class Employee(BaseModel):
         ("divorced", "Divorced")
     )
     marital_status = models.CharField(max_length=10,choices=MARITAL_STATUS_CHOICES, null=True,blank=True)
+    address = models.ForeignKey(Address,on_delete=models.SET_NULL, null=True,blank=True)
 
 
 class WorkDetail(models.Model):
@@ -68,8 +77,6 @@ class WorkDetail(models.Model):
         Department, on_delete=models.SET_NULL, null=True, blank=True)
     salary = models.DecimalField(
         null=True, blank=True, max_digits=12, decimal_places=2)
-    employer = models.ForeignKey(
-        Employer, on_delete=models.CASCADE, null=True, blank=True)
     employee_no = models.CharField(
         max_length=30, unique=True, null=True, blank=True)
     date_of_employment = models.DateField()
@@ -86,8 +93,18 @@ class PaymentDetail(models.Model):
         null=True, blank=True, max_digits=12, decimal_places=2)
 
 
+@receiver(post_save, sender=Employee)
+def create_employee_profile(sender, instance, created, **kwargs):
+    if created:
+        WorkDetail.objects.create(employee=instance)
+        PaymentDetail.objects.create(employee=instance)
+    instance.workdetail.save()
+    instance.paymentdetail.save()
+
 class Payroll(models.Model):
-    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    month = models.DateField()
+    year = models.DateField()
+    employee = models.OneToOneField(Employee, on_delete=models.CASCADE)
     basic_salary = models.DecimalField(
         null=True, blank=True, max_digits=12, decimal_places=2)
     bonus = models.DecimalField(

@@ -37,3 +37,8 @@ class EmployerForm(forms.ModelForm):
     class Meta:
         model = Employer
         fields = ("name", "description", "logo")
+
+class DepartmentForm(forms.ModelForm):
+    class Meta:
+        model = Department
+        fields = ("name")
