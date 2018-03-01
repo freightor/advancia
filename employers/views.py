@@ -1,15 +1,16 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
-from companies.models import Employee, Employer, WorkDetail,PaymentDetail
-from companies.forms import AddressForm, EmployeeForm, EmployerForm, DepartmentForm
+from employers.models import Employee, Employer, WorkDetail,PaymentDetail
+from employers.forms import AddressForm, EmployeeForm, EmployerForm, DepartmentForm
 
 # Create your views here.
-
+def dashboard(request):
+    return render(request,"employers/dashboard.html")
 
 def employee_list(request):
     employer = request.user.administrator.employer
     queryset = Employee.objects.filter(employer=employer)
-    return render(request, "companies/employee_list.html", {"employees": queryset})
+    return render(request, "employers/employee_list.html", {"employees": queryset})
 
 
 def new_employee(request):
@@ -23,11 +24,11 @@ def new_employee(request):
             employee.employer = employer
             employee.address = addr.save()
             employee.save()
-            return redirect("companies:employee_detail")
+            return redirect("employers:employee_detail")
     else:
         form = EmployeeForm(prefix="employee")
         addr = AddressForm(prefix="addr")
-    return render(request, "companies/new_employee.html", {"form": form, "addr": addr})
+    return render(request, "employers/new_employee.html", {"form": form, "addr": addr})
 
 
 def edit_employee(request, pk):
@@ -41,11 +42,11 @@ def edit_employee(request, pk):
             employee.edited_by = request.user
             addr.save()
             employee.save()
-            return redirect("companies:employee_detail", pk=pk)
+            return redirect("employers:employee_detail", pk=pk)
     else:
         form = EmployeeForm(instance=obj, prefix="employee")
         addr = AddressForm(instance=obj.address, prefix="addr")
-    return render(request, "companies/new_employee.html", {"form": form, "addr": addr})
+    return render(request, "employers/new_employee.html", {"form": form, "addr": addr})
 
 
 def new_employer(request):
@@ -60,11 +61,11 @@ def new_employer(request):
             administrator = request.user.administrator
             administrator.employer = employer
             administrator.save()
-            return redirect("companies:employee_list")
+            return redirect("employers:employee_list")
     else:
         form = EmployerForm(prefix="employer")
         addr = AddressForm(prefix="addr")
-    return render(request, "companies/new_employer.html", {"form": form, "addr": addr})
+    return render(request, "employers/new_employer.html", {"form": form, "addr": addr})
 
 
 def edit_employer(request):
@@ -77,11 +78,11 @@ def edit_employer(request):
             employer.edited_by = request.user
             employer.save()
             addr.save()
-            return redirect("companies:employee_list")
+            return redirect("employers:employee_list")
     else:
         form = EmployerForm(prefix="employer",instance=obj)
         addr = AddressForm(prefix="addr",instance=obj.address)
-    return render(request, "companies/new_company.html", {"form": form, "addr": addr})
+    return render(request, "employers/new_employer.html", {"form": form, "addr": addr})
 
 def new_department(request):
     employer = request.user.administrator.employer
@@ -92,7 +93,7 @@ def new_department(request):
             dept.created_by = request.user
             dept.employer = employer
             dept.save()
-            return redirect("companies:dept_list")
+            return redirect("employers:dept_list")
     else:
         form = DepartmentForm()
-    return render(request,"companies/dept_list.html",{"form":form})
+    return render(request,"employers/dept_list.html",{"form":form})

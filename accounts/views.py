@@ -4,7 +4,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.core.exceptions import ViewDoesNotExist
 from django.contrib.auth.forms import AuthenticationForm
 from accounts.forms import SignUpForm
-from companies.models import Employee
+from employers.models import Administrator
 # Create your views here.
 
 
@@ -18,14 +18,8 @@ def signup(request, user_type):
             user = authenticate(username=username, password=raw_password)
             login(request, user)
             if user_type == "employer":
-                Employee.objects.create(
-                    user=user, role="admin", user_type="employee",created_by=user)
-                return redirect("companies:new_employer")
-            elif user_type == "merchant":
-                Merchant.objects.create(
-                    user=user, role="admin", user_type="merchant", created_by=user)
-                # return redirect("shop:new_store")
-                pass
+                Administrator.objects.create(user=user, role="admin",created_by=user)
+                return redirect("employers:new_employer")
             else:
                 raise ViewDoesNotExist
     else:
@@ -44,7 +38,7 @@ def login_view(request):
                 if hasattr(user,"merchant"):
                     pass
                     # return redirect("merchants:index")
-                return redirect("companies:employee_list")
+                return redirect("employers:employee_list")
     else:
         form = AuthenticationForm()
         user = auth.get_user(request)
@@ -53,7 +47,7 @@ def login_view(request):
                 pass
                 # return redirect("shop:product_list")
             elif user.employee.role == "admin":
-                return redirect("companies:employee_list")
+                return redirect("employers:employee_list")
             else:
                 pass
                 # return redirect("shop:shop_home")

@@ -1,5 +1,5 @@
 from django import forms
-from companies.models import Employee, Employer, Address, WorkDetail, PaymentDetail, Department
+from employers.models import Employee, Employer, Address, WorkDetail, PaymentDetail, Department
 
 
 class AddressForm(forms.ModelForm):
@@ -21,9 +21,9 @@ class WorkDetailForm(forms.ModelForm):
         fields = ("department", "salary", "employee_no",
                   "date_of_employment", "social_security_no")
 
-    def __init__(self, company, *args, **kwargs):
+    def __init__(self, employer, *args, **kwargs):
         self.fields["department"].queryset = Department.objects.filter(
-            company=company)
+            employer=employer)
         super().__init__(*args, **kwargs)
 
 
@@ -41,4 +41,4 @@ class EmployerForm(forms.ModelForm):
 class DepartmentForm(forms.ModelForm):
     class Meta:
         model = Department
-        fields = ("name")
+        fields = ("name",)

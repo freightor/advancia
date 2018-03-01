@@ -34,17 +34,16 @@ class Employer(BaseModel):
 
 class JobTitle(models.Model):
     name = models.CharField(max_length=255)
-    company = models.ForeignKey(Employer, on_delete=models.CASCADE)
+    employer = models.ForeignKey(Employer, on_delete=models.CASCADE)
 
 class Department(BaseModel):
     name = models.CharField(max_length=200)
-    company = models.ForeignKey(Employer, on_delete=models.CASCADE)
+    employer = models.ForeignKey(Employer, on_delete=models.CASCADE)
 
 
 class Administrator(BaseModel, Profile):
-    employer = models.ForeignKey(Employer, on_delete=models.CASCADE)
+    employer = models.ForeignKey(Employer, on_delete=models.CASCADE,null=True,blank=True)
     user_type = models.CharField(max_length=10, default="employer")
-
 
 class Employee(BaseModel):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

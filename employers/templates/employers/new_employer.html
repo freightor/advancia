@@ -1,0 +1,22 @@
+{% extends "accounts.html" %} 
+{% load static %} 
+{% load widget_tweaks %} 
+{% block title %} Advancia | New Employer {% endblock%} 
+{% block content %}
+<div class="account-page">
+    <div class="container">
+        <h3 class="account-title">New Employer</h3>
+        <div class="account-box">
+            <div class="account-wrapper">
+                <form method="POST" enctype="multipart/form-data">
+                    {% include "form.html" %}
+                    {% include "address.html" %}
+                    <div class="form-group text-center">
+                        <button class="btn btn-primary btn-block account-btn" type="submit">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
