@@ -115,9 +115,3 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # LOGOUT_REDIRECT_URL = 'login'
 # LOGIN_REDIRECT_URL = 'shop:product_list'
-
-# Cart Management
-CART_SESSION_ID = "cart_id"
-
-#Users
-DEFAULT_PASSWORD = os.environ.get("NEW_USER_PASSWORD")
