@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
-from employers.models import Employee, Employer, WorkDetail, PaymentDetail
+from employers.models import Employee, Employer, WorkDetail, PaymentDetail, Payroll
 from employers.forms import AddressForm, EmployeeForm, EmployerForm, DepartmentForm
 
 # Create your views here.
@@ -120,7 +120,9 @@ def new_department(request):
         form = DepartmentForm()
     return render(request, "employers/dept_list.html", {"form": form})
 
-def generate_payrolls(request,month):
+def generate_payrolls(request):
     employer = request.user.administrator.employer
-    pass
+    for employee in Employee.objects.filter(employer=employer,active=True):
+        Payroll.objects.create(employee=employee)
+    return redirect("employers:payrolls")
     

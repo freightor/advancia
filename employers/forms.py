@@ -18,7 +18,7 @@ class EmployeeForm(forms.ModelForm):
 class WorkDetailForm(forms.ModelForm):
     class Meta:
         model = WorkDetail
-        fields = ("department", "salary", "employee_no",
+        fields = ("department", "basic_salary", "employee_no",
                   "date_of_employment", "social_security_no")
 
     def __init__(self, employer, *args, **kwargs):

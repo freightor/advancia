@@ -5,7 +5,6 @@ from django.contrib.auth.models import User
 
 
 class BaseModel(models.Model):
-    active = models.BooleanField(default=False)
     edited_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(
@@ -19,7 +18,7 @@ class BaseModel(models.Model):
     def __str__(self):
         if hasattr(self,"name"):
             return self.name
-        else:
+        if hasattr(self,"user"):
             return self.user.get_full_name()
 
 class ActiveModel(models.Model):

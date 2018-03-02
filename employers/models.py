@@ -88,7 +88,7 @@ class WorkDetail(models.Model):
     department = models.ForeignKey(
         Department, on_delete=models.SET_NULL, null=True, blank=True)
     basic_salary = models.DecimalField(
-        null=True, blank=True, max_digits=12, decimal_places=2)
+        default=0, max_digits=12, decimal_places=2)
     employee_no = models.CharField(
         max_length=30, unique=True, null=True, blank=True)
     date_of_employment = models.DateField(null=True, blank=True)
@@ -99,11 +99,11 @@ class WorkDetail(models.Model):
 class PaymentDetail(models.Model):
     employee = models.OneToOneField(Employee, on_delete=models.CASCADE)
     bonus = models.DecimalField(
-        null=True, blank=True, max_digits=12, decimal_places=2)
+        default=0, max_digits=12, decimal_places=2)
     allowances = models.DecimalField(
-        null=True, blank=True, max_digits=12, decimal_places=2)
+        default=0, max_digits=12, decimal_places=2)
     deductions = models.DecimalField(
-        null=True, blank=True, max_digits=12, decimal_places=2)
+        default=0, max_digits=12, decimal_places=2)
 
 
 @receiver(post_save, sender=Employee)
@@ -127,6 +127,7 @@ class Payroll(BaseModel):
     deductions = models.DecimalField(
         null=True, blank=True, max_digits=12, decimal_places=2)
 
+        
     @property
     def month(self):
         return self.date.month
@@ -134,7 +135,9 @@ class Payroll(BaseModel):
     @property
     def year(self):
         return self.date.year
-
+    @property
+    def name(self):
+        return "{0}_{1}".format(self.month,self.year)
     @property
     def gross_salary(self):
         return self.basic_salary + self.bonus+self.allowances
@@ -160,7 +163,7 @@ class Payroll(BaseModel):
         return self.taxable_income - self.deductions
 
     def save(self, *args, **kwargs):
-        self.basic_salary = self.employee.basic_salary
+        self.basic_salary = self.employee.workdetail.basic_salary
         self.allowances = self.employee.paymentdetail.allowances
         self.bonus = self.employee.paymentdetail.bonus
         self.deductions = self.employee.paymentdetail.deductions
