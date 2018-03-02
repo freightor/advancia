@@ -46,7 +46,7 @@ def login_view(request):
             if hasattr(user, "merchant"):
                 pass
                 # return redirect("shop:product_list")
-            elif user.employee.role == "admin":
+            elif user.administrator.role == "admin":
                 return redirect("employers:employee_list")
             else:
                 pass
