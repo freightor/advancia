@@ -119,3 +119,8 @@ def new_department(request):
     else:
         form = DepartmentForm()
     return render(request, "employers/dept_list.html", {"form": form})
+
+def generate_payrolls(request,month):
+    employer = request.user.administrator.employer
+    pass
+    

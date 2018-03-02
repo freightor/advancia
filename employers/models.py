@@ -4,7 +4,7 @@ from django.db import models
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
-from common.models import BaseModel
+from common.models import BaseModel, ActiveModel
 from accounts.models import Profile
 
 # Create your models here.
@@ -25,34 +25,39 @@ def logo_location(instance, filename):
     return "logos/employers/employer_{0}{1}".format(instance.id, file_ext)
 
 
-class Employer(BaseModel):
+class Employer(BaseModel, ActiveModel):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     logo = models.ImageField(upload_to=logo_location, null=True, blank=True)
     name = models.CharField(max_length=255)
     address = models.ForeignKey(Address, on_delete=models.CASCADE)
     description = models.TextField()
 
+
 class JobTitle(models.Model):
     name = models.CharField(max_length=255)
     employer = models.ForeignKey(Employer, on_delete=models.CASCADE)
 
-class Department(BaseModel):
+
+class Department(BaseModel, ActiveModel):
     name = models.CharField(max_length=200)
     employer = models.ForeignKey(Employer, on_delete=models.CASCADE)
 
 
 class Administrator(BaseModel, Profile):
-    employer = models.ForeignKey(Employer, on_delete=models.CASCADE,null=True,blank=True)
+    employer = models.ForeignKey(
+        Employer, on_delete=models.CASCADE, null=True, blank=True)
     user_type = models.CharField(max_length=10, default="employer")
 
-class Employee(BaseModel):
+
+class Employee(BaseModel, ActiveModel):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     first_name = models.CharField(max_length=50)
     middle_name = models.CharField(max_length=50, null=True, blank=True)
     last_name = models.CharField(max_length=50)
     employer = models.ForeignKey(
         Employer, on_delete=models.CASCADE, null=True, blank=True)
-    role = models.ForeignKey(JobTitle,on_delete=models.SET_NULL,null=True,blank=True)
+    role = models.ForeignKey(
+        JobTitle, on_delete=models.SET_NULL, null=True, blank=True)
     date_of_birth = models.DateField()
     GENDER_CHOICES = (
         ("M", "Male"),
@@ -66,13 +71,15 @@ class Employee(BaseModel):
         ("engaged", "Engaged"),
         ("divorced", "Divorced")
     )
-    marital_status = models.CharField(max_length=10,choices=MARITAL_STATUS_CHOICES, null=True,blank=True)
-    address = models.ForeignKey(Address,on_delete=models.SET_NULL, null=True,blank=True)
+    marital_status = models.CharField(
+        max_length=10, choices=MARITAL_STATUS_CHOICES, null=True, blank=True)
+    address = models.ForeignKey(
+        Address, on_delete=models.SET_NULL, null=True, blank=True)
 
     @property
     def name(self):
         if self.middle_name:
-            return "{0} {1} {2}".format(self.first_name,self.middle_name,self.last_name)
+            return "{0} {1} {2}".format(self.first_name, self.middle_name, self.last_name)
         return "{0} {1}".format(self.first_name, self.last_name)
 
 
@@ -80,7 +87,7 @@ class WorkDetail(models.Model):
     employee = models.OneToOneField(Employee, on_delete=models.CASCADE)
     department = models.ForeignKey(
         Department, on_delete=models.SET_NULL, null=True, blank=True)
-    salary = models.DecimalField(
+    basic_salary = models.DecimalField(
         null=True, blank=True, max_digits=12, decimal_places=2)
     employee_no = models.CharField(
         max_length=30, unique=True, null=True, blank=True)
@@ -107,25 +114,54 @@ def create_employee_profile(sender, instance, created, **kwargs):
     instance.workdetail.save()
     instance.paymentdetail.save()
 
-class Payroll(models.Model):
-    month = models.DateField()
-    year = models.DateField()
-    employee = models.OneToOneField(Employee, on_delete=models.CASCADE)
+
+class Payroll(BaseModel):
+    date = models.DateField(auto_now_add=True)
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
     basic_salary = models.DecimalField(
         null=True, blank=True, max_digits=12, decimal_places=2)
     bonus = models.DecimalField(
         null=True, blank=True, max_digits=12, decimal_places=2)
     allowances = models.DecimalField(
         null=True, blank=True, max_digits=12, decimal_places=2)
-    gross_salary = models.DecimalField(
+    deductions = models.DecimalField(
         null=True, blank=True, max_digits=12, decimal_places=2)
-    ssf_employee = models.DecimalField(
-        null=True, blank=True, max_digits=12, decimal_places=2)
-    ssf_employer = models.DecimalField(
-        null=True, blank=True, max_digits=12, decimal_places=2)
-    taxable_income = models.DecimalField(
-        null=True, blank=True, max_digits=12, decimal_places=2)
-    paye = models.DecimalField(
-        null=True, blank=True, max_digits=12, decimal_places=2)
-    net_salary = models.DecimalField(
-        null=True, blank=True, max_digits=12, decimal_places=2)
+
+    @property
+    def month(self):
+        return self.date.month
+
+    @property
+    def year(self):
+        return self.date.year
+
+    @property
+    def gross_salary(self):
+        return self.basic_salary + self.bonus+self.allowances
+
+    @property
+    def ssf_employee(self):
+        return self.gross_salary * 0.05
+
+    @property
+    def ssf_employer(self):
+        return self.gross_salary * 0.3
+
+    @property
+    def taxable_income(self):
+        return self.gross_salary - self.ssf_employee
+
+    @property
+    def paye(self):
+        return self.taxable_income * 0.14
+
+    @property
+    def net_salary(self):
+        return self.taxable_income - self.deductions
+
+    def save(self, *args, **kwargs):
+        self.basic_salary = self.employee.basic_salary
+        self.allowances = self.employee.paymentdetail.allowances
+        self.bonus = self.employee.paymentdetail.bonus
+        self.deductions = self.employee.paymentdetail.deductions
+        super().save(*args, **kwargs)

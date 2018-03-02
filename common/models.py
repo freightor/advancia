@@ -22,3 +22,8 @@ class BaseModel(models.Model):
         else:
             return self.user.get_full_name()
 
+class ActiveModel(models.Model):
+    active = models.BooleanField(default=False)
+
+    class Meta:
+        abstract = True
