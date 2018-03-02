@@ -1,5 +1,6 @@
 import os
 import uuid
+from decimal import Decimal, ROUND_HALF_UP
 from django.db import models
 from django.dispatch import receiver
 from django.db.models.signals import post_save
@@ -43,7 +44,13 @@ class Department(BaseModel, ActiveModel):
     employer = models.ForeignKey(Employer, on_delete=models.CASCADE)
 
 
+def admin_avatar_location(instance, filename):
+    file_ext = os.path.splitext(filename)[1]
+    return "logos/admins/employer_{0}{1}".format(instance.id, file_ext)
+
+
 class Administrator(BaseModel, Profile):
+    avatar = models.ImageField(null=True, blank=True, upload_to=admin_avatar_location)
     employer = models.ForeignKey(
         Employer, on_delete=models.CASCADE, null=True, blank=True)
     user_type = models.CharField(max_length=10, default="employer")
@@ -127,7 +134,10 @@ class Payroll(BaseModel):
     deductions = models.DecimalField(
         null=True, blank=True, max_digits=12, decimal_places=2)
 
-        
+    @property
+    def employer(self):
+        return self.employee.employer
+
     @property
     def month(self):
         return self.date.month
@@ -135,20 +145,22 @@ class Payroll(BaseModel):
     @property
     def year(self):
         return self.date.year
+
     @property
     def name(self):
-        return "{0}_{1}".format(self.month,self.year)
+        return "{0}_{1}".format(self.month, self.year)
+
     @property
     def gross_salary(self):
-        return self.basic_salary + self.bonus+self.allowances
+        return self.basic_salary + self.bonus + self.allowances
 
     @property
     def ssf_employee(self):
-        return self.gross_salary * 0.05
+        return Decimal(self.gross_salary * Decimal('0.05')).quantize(Decimal('.01'))
 
     @property
     def ssf_employer(self):
-        return self.gross_salary * 0.3
+        return Decimal(self.gross_salary * Decimal('0.3')).quantize(Decimal('.01'))
 
     @property
     def taxable_income(self):
@@ -156,7 +168,7 @@ class Payroll(BaseModel):
 
     @property
     def paye(self):
-        return self.taxable_income * 0.14
+        return Decimal(self.taxable_income * Decimal('0.14')).quantize(Decimal('.01'))
 
     @property
     def net_salary(self):

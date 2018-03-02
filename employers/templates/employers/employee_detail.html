@@ -1,16 +1,19 @@
 {% extends "employer_base.html" %}
+{% load humanize %}
 {% block title %}Advancia | Profile{% endblock %}
 {% block content %}
     <div class="page-wrapper">
         <div class="content container-fluid">
             <div class="row">
                 <div class="col-sm-8">
-                    <h4 class="page-title">Profile</h4>
+                    <h4 class="page-title">Employee Profile</h4>
                 </div>
 
                 <div class="col-sm-4 text-right m-b-30">
                     <a href="{% url 'employers:edit_employee' pk=employee.pk %}" class="btn btn-primary rounded">
                         <i class="fa fa-plus"></i> Edit Profile</a>
+                    <a href="{% url 'employers:edit_details' pk=employee.pk %}" class="btn btn-primary rounded">
+                        <i class="fa fa-plus"></i> Edit Work Details</a>
                 </div>
             </div>
             <div class="card-box">
@@ -49,7 +52,7 @@
                                             </li>
                                             <li>
                                                 <span class="title">Birthday:</span>
-                                                <span class="text">{{employee.date_of_birth}}</span>
+                                                <span class="text">{{employee.date_of_birth|date:"F d"}}</span>
                                             </li>
                                             <li>
                                                 <span class="title">Address:</span>
@@ -95,7 +98,7 @@
                                     </div>
                                     <div class="experience-content">
                                         <div class="timeline-content">
-                                            <a href="#/" class="name">Department</a>
+                                            <a href="#" class="name">Department</a>
                                             <div>{{employee.workdetail.department}}</div>
                                         </div>
                                 </li>
@@ -106,7 +109,7 @@
                                     <div class="experience-content">
                                         <div class="timeline-content">
                                             <a href="#/" class="name">Salary</a>
-                                            <div>GHC {{employee.workdetail.salary}}</div>
+                                            <div>GHC {{employee.workdetail.basic_salary|intcomma}}</div>
                                         </div>
                                     </div>
                                 </li>
@@ -135,7 +138,7 @@
                                     <div class="experience-content">
                                         <div class="timeline-content">
                                             <a href="#/" class="name">Bonus</a>
-                                            <span class="time">{{employee.paymentdetail.bonus}}</span>
+                                            <span class="time">GHc {{employee.paymentdetail.bonus|intcomma}}</span>
                                         </div>
                                     </div>
                                 </li>
@@ -146,7 +149,7 @@
                                     <div class="experience-content">
                                         <div class="timeline-content">
                                             <a href="#/" class="name">Allowances</a>
-                                            <span class="time">{{employee.paymentdetail.allowances}}</span>
+                                            <span class="time">GHc {{employee.paymentdetail.allowances|intcomma}}</span>
                                         </div>
                                     </div>
                                 </li>
@@ -157,7 +160,7 @@
                                     <div class="experience-content">
                                         <div class="timeline-content">
                                             <a href="#/" class="name">Deductions</a>
-                                            <span class="time">{{employee.paymentdetail.deductions}}</span>
+                                            <span class="time">GHc {{employee.paymentdetail.deductions|intcomma}}</span>
                                         </div>
                                     </div>
                                 </li>

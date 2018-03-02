@@ -1,21 +1,19 @@
 {% extends "employer_base.html" %} 
 {% load widget_tweaks %} 
-{% block title %}Advancia | New Employee{% endblock %} 
+{% block title %}Advancia | Employee Details{% endblock %} 
 {% block content %}
 <div class="page-wrapper">
     <div class="content container-fluid">
         <div id="add_employee">
             <div class="modal-header">
-                {% if employee %}
-                <h4 class="modal-title">Edit Employee</h4>
-                {% else %}
-                <h4 class="modal-title">Add Employee</h4>
-                {% endif %}
+                <h4 class="modal-title">Employee Details</h4>
             </div>
             <div class="modal-body">
                 <form class="m-b-30" method="POST">
                     <div class="row">
-                        {% csrf_token %} {% for hidden in form.hidden_fields %} {{ hidden }} {% endfor %} {% for field in form.visible_fields %}
+                        {% csrf_token %} 
+                        {% for hidden in work.hidden_fields %} {{ hidden }} {% endfor %} 
+                        {% for field in work.visible_fields %}
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="control-label" for="{{ field.id_for_label }}">{{ field.label }}
@@ -27,7 +25,9 @@
                                 {% endfor %}
                             </div>
                         </div>
-                        {% endfor %} {% for hidden in addr.hidden_fields %} {{ hidden }} {% endfor %} {% for field in addr.visible_fields %}
+                        {% endfor %}
+                        {% for hidden in payment.hidden_fields %} {{ hidden }} {% endfor %} 
+                        {% for field in payment.visible_fields %}
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="control-label" for="{{ field.id_for_label }}">{{ field.label }}
@@ -41,11 +41,11 @@
                         </div>
                         {% endfor %}
                         <div class="m-t-20 text-center">
-                            <button class="btn btn-primary">Create Employee</button>
+                            <button class="btn btn-primary">Save</button>
                         </div>
                 </form>
                 </div>
             </div>
         </div>
     </div>
-{% endblock %}
+    {% endblock %}

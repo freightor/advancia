@@ -10,7 +10,6 @@ class Profile(models.Model):
     Abstract Base Class for individuals in an employee with Login abilities
     """
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    avatar = models.ImageField(null=True, blank=True)
     role_choices = (
         ("admin", "Admin"),
         ("regular", "Regular")

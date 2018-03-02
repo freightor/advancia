@@ -1,0 +1,23 @@
+{% extends "employer_base.html" %} 
+{% load static %} 
+{% load widget_tweaks %} 
+{% block title %} Advancia | New Admin {% endblock%} 
+{% block content %}
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div id="add_employee">
+            <div class="modal-header">
+                <h4 class="modal-title"> Add Admin</h4>
+            </div>
+            <div class="modal-body">
+                <form method="POST">
+                    {% include "form.html" %}
+                    <div class="form-group text-center">
+                        <button class="btn btn-primary btn-block account-btn" type="submit">Add</button>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -149,17 +149,13 @@
 					<div id="sidebar-menu" class="sidebar-menu">
 						<ul>
 							<li class="active"> 
-								<a href="index.html">Dashboard</a>
+								<a href="{% url 'employers:dashboard' %}">Dashboard</a>
 							</li>
 							<li class="submenu">
 								<a href="#" class="noti-dot"><span> Employees</span> <span class="menu-arrow"></span></a>
 								<ul class="list-unstyled" style="display: none;">
-									<li><a href="employees.html">All Employees</a></li>
-									<li><a href="holidays.html">Holidays</a></li>
-									<li><a href="leaves.html"><span>Leave Requests</span> <span class="badge bg-primary pull-right">1</span></a></li>
-									<li><a href="attendance.html">Attendance</a></li>
-									<li><a href="departments.html">Departments</a></li>
-									<li><a href="designations.html">Designations</a></li>
+									<li><a href="{% url 'employers:employee_list' %}">All Employees</a></li>
+									<li><a href="{% url 'employers:new_employee' %}"><i class="fa fa-plus"></i> New Employee</a></li>
 								</ul>
 							</li>
 							<li class="submenu">
@@ -176,12 +172,12 @@
 							<li class="submenu">
 								<a href="#"><span> Payroll </span> <span class="menu-arrow"></span></a>
 								<ul class="list-unstyled" style="display: none;">
-									<li><a href="salary.html"> Employee Salary </a></li>
-									<li><a href="salary-view.html"> Payslip </a></li>
+									<li><a href="{% url 'employers:payrolls' %}"> Employee Payroll </a></li>
+									<li><a href="{% url 'employers:payslips' %}"> Payslips </a></li>
 								</ul>
 							</li>
 							<li> 
-								<a href="users.html">Users</a>
+								<a href="{% url 'employers:admins' %}">Users</a>
 							</li>
 							<li class="submenu">
 								<a href="#"><span> Reports </span> <span class="menu-arrow"></span></a>

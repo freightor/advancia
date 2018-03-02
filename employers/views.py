@@ -1,13 +1,21 @@
+import datetime as dt
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
-from employers.models import Employee, Employer, WorkDetail, PaymentDetail, Payroll
-from employers.forms import AddressForm, EmployeeForm, EmployerForm, DepartmentForm
+from accounts.forms import SignUpForm
+from employers.models import Employee, Employer, WorkDetail, PaymentDetail, Payroll, Administrator
+from employers.forms import AddressForm, EmployeeForm, EmployerForm, DepartmentForm, WorkDetailForm, PaymentDetailForm, AdministratorForm
 
 # Create your views here.
 
 
 def dashboard(request):
     return render(request, "employers/dashboard.html")
+
+
+def admin_list(request):
+    employer = request.user.administrator.employer
+    admins = Administrator.objects.filter(employer=employer)
+    return render(request, "employers/users.html", {"admins": admins})
 
 
 def employee_list(request):
@@ -54,19 +62,42 @@ def edit_employee(request, pk):
 
 def employee_detail(request, pk):
     employer = request.user.administrator.employer
-    employee = get_object_or_404(Employee.objects.filter(employer=employer),pk=pk)
+    employee = get_object_or_404(
+        Employee.objects.filter(employer=employer), pk=pk)
     return render(request, "employers/employee_detail.html", {"employee": employee})
 
 
 def activate_employee(request, pk):
     employer = request.user.administrator.employer
-    employee = get_object_or_404(Employee.objects.filter(employer=employer),pk=pk)
+    employee = get_object_or_404(
+        Employee.objects.filter(employer=employer), pk=pk)
     if employee.active:
         employee.active = False
     else:
         employee.active = True
     employee.save()
     return redirect("employers:employee_list")
+
+
+def edit_details(request, pk):
+    employer = request.user.administrator.employer
+    employee = get_object_or_404(
+        Employee.objects.filter(employer=employer), pk=pk)
+    if request.method == "POST":
+        work = WorkDetailForm(employer, request.POST,
+                              instance=employee.workdetail, prefix="work")
+        payment = PaymentDetailForm(
+            request.POST, instance=employee.paymentdetail, prefix="pay")
+        if work.is_valid() and payment.is_valid():
+            work.save()
+            payment.save()
+            return redirect("employers:employee_detail", pk=employee.pk)
+    else:
+        work = WorkDetailForm(
+            employer, instance=employee.workdetail, prefix="work")
+        payment = PaymentDetailForm(
+            instance=employee.paymentdetail, prefix="pay")
+    return render(request, "employers/details.html", {"work": work, "payment": payment})
 
 
 def new_employer(request):
@@ -120,9 +151,28 @@ def new_department(request):
         form = DepartmentForm()
     return render(request, "employers/dept_list.html", {"form": form})
 
+
+def new_admin(request):
+    employer = request.user.administrator.employer
+    if request.method == "POST":
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            Administrator.objects.create(user=user, employer=employer,role="regular",created_by=request.user)
+            return redirect("employers:admins")
+    else:
+        form = SignUpForm()
+    return render(request, "employers/new_admin.html", {"form": form})
+
 def generate_payrolls(request):
     employer = request.user.administrator.employer
-    for employee in Employee.objects.filter(employer=employer,active=True):
+    for employee in Employee.objects.filter(employer=employer, active=True):
         Payroll.objects.create(employee=employee)
     return redirect("employers:payrolls")
-    
+
+def payroll_list(request):
+    payrolls = Payroll.objects.all()
+    return render(request,"employers/payrolls.html",{"payrolls":payrolls})
+
+def generate_payslips(request):
+    return render(request,"employers/payslips.html")

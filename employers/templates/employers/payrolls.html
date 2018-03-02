@@ -1,0 +1,106 @@
+{% extends "employer_base.html" %}
+{% load humanize %}
+{% block title %}Advancia | Payroll {% endblock %}
+{% block content %}
+    <div class="page-wrapper">
+        <div class="content container-fluid">
+            <div class="row">
+                <div class="col-xs-4">
+                    <h4 class="page-title">Employee Payroll</h4>
+                </div>
+                <div class="col-xs-8 text-right m-b-30">
+                    <a href="{% url 'employers:gen_pay' %}" class="btn btn-primary rounded pull-right">
+                        <i class="fa fa-plus"></i> Generate Payrolls</a>
+                </div>
+            </div>
+            <div class="row filter-row">
+                <div class="col-sm-3 col-md-2 col-xs-6">
+                    <div class="form-group form-focus">
+                        <label class="control-label">Employee Name</label>
+                        <input type="text" class="form-control floating" />
+                    </div>
+                </div>
+                <div class="col-sm-3 col-md-2 col-xs-6">
+                    <div class="form-group form-focus select-focus">
+                        <label class="control-label">Role</label>
+                        <select class="select floating">
+                            <option value=""> -- Select -- </option>
+                            <option value="">Employee</option>
+                            <option value="1">Manager</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-3 col-md-2 col-xs-6">
+                    <div class="form-group form-focus select-focus">
+                        <label class="control-label">Leave Status</label>
+                        <select class="select floating">
+                            <option value=""> -- Select -- </option>
+                            <option value="0"> Pending </option>
+                            <option value="1"> Approved </option>
+                            <option value="2"> Rejected </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-3 col-md-2 col-xs-6">
+                    <div class="form-group form-focus">
+                        <label class="control-label">From</label>
+                        <div class="cal-icon">
+                            <input class="form-control floating datetimepicker" type="text">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3 col-md-2 col-xs-6">
+                    <div class="form-group form-focus">
+                        <label class="control-label">To</label>
+                        <div class="cal-icon">
+                            <input class="form-control floating datetimepicker" type="text">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3 col-md-2 col-xs-6">
+                    <a href="#" class="btn btn-success btn-block"> Search </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="table-responsive">
+                        <table class="table table-striped custom-table datatable">
+                            <thead>
+                                <tr>
+                                    <th style="width:10%;">Employee</th>
+                                    <th>Basic Salary</th>
+                                    <th>Bonus</th>
+                                    <th>Allowances</th>
+                                    <th>Gross Salary</th>
+                                    <th>SSF</th>
+                                    <th>SSF Employer</th>
+                                    <th>Taxable</th>
+                                    <th>P.A.Y.E</th>
+                                    <th>Net Salary</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for payroll in payrolls %}
+                                    <tr>
+                                        <td>{{payroll.employee}}</td>
+                                        <td>{{payroll.basic_salary|intcomma}}</td>
+                                        <td>{{payroll.bonus|intcomma}}</td>
+                                        <td>{{payroll.allowances|intcomma}}</td>
+                                        <td>{{payroll.gross_salary|intcomma}}</td>
+                                        <td>{{payroll.ssf_employee|intcomma}}</td>
+                                        <td>{{payroll.ssf_employer|intcomma}}</td>
+                                        <td>{{payroll.taxable_income|intcomma}}</td>
+                                        <td>{{payroll.paye|intcomma}}</td>
+                                        <td>{{payroll.net_salary|intcomma}}</td>
+                                    </tr>
+                                {% empty %}
+                                    <p class="alert alert-danger">Sorry No Payrolls yet</p>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
