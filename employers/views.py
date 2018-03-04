@@ -130,11 +130,11 @@ def edit_employer(request):
             employer.edited_by = request.user
             employer.save()
             addr.save()
-            return redirect("employers:employee_list")
+            return redirect("employers:settings")
     else:
         form = EmployerForm(prefix="employer", instance=obj)
         addr = AddressForm(prefix="addr", instance=obj.address)
-    return render(request, "employers/new_employer.html", {"form": form, "addr": addr})
+    return render(request, "employers/settings.html", {"form": form, "addr": addr})
 
 
 def new_department(request):

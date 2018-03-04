@@ -1,0 +1,33 @@
+{% load widget_tweaks %}
+<div class="row">
+    {% csrf_token %} 
+    {% if form.non_field_errors %}
+        <div class="alert alert-danger">
+            {% for error in form.non_field_errors %} {{error}} {% endfor %}
+        </div>
+    {% endif %} 
+    {% for hidden in form.hidden_fields %} {{ hidden.errors }}{{ hidden }} {% endfor %} 
+    {% for field in form.visible_fields %}
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label" for="{{ field.id_for_label }}">
+                    {{ field.label }}
+                </label>
+                {% if form.is_bound %} 
+                    {% if field.errors %} 
+                        {% render_field field class="form-control is-invalid" %} 
+                        {% for error in field.errors %}
+                            <span class="help-block text-danger">
+                                {{ error }}
+                            </span>
+                        {% endfor %} 
+                    {% else %} 
+                        {% render_field field class="form-control is-valid" %} 
+                    {% endif %} 
+                {% else %} 
+                    {% render_field field class="form-control" %} 
+                {% endif %} 
+            </div>
+        </div>
+    {% endfor %}
+</div>
