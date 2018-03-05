@@ -37,5 +37,5 @@ def get_tax(amount, tax_rates):
 
 
 if __name__ == "__main__":
-    print(get_tax(5000, get_tax_data(
+    print(get_tax(3700, get_tax_data(
         "http://www.gra.gov.gh/index.php/tax-information/income-tax")))

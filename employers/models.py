@@ -6,6 +6,7 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 from common.models import BaseModel, ActiveModel
+from common.utils import make_employee_id
 from accounts.models import Profile
 
 # Create your models here.
@@ -50,7 +51,8 @@ def admin_avatar_location(instance, filename):
 
 
 class Administrator(BaseModel, Profile):
-    avatar = models.ImageField(null=True, blank=True, upload_to=admin_avatar_location)
+    avatar = models.ImageField(
+        null=True, blank=True, upload_to=admin_avatar_location)
     employer = models.ForeignKey(
         Employer, on_delete=models.CASCADE, null=True, blank=True)
     user_type = models.CharField(max_length=10, default="employer")
@@ -63,8 +65,6 @@ class Employee(BaseModel, ActiveModel):
     last_name = models.CharField(max_length=50)
     employer = models.ForeignKey(
         Employer, on_delete=models.CASCADE, null=True, blank=True)
-    role = models.ForeignKey(
-        JobTitle, on_delete=models.SET_NULL, null=True, blank=True)
     date_of_birth = models.DateField()
     GENDER_CHOICES = (
         ("M", "Male"),
@@ -94,6 +94,8 @@ class WorkDetail(models.Model):
     employee = models.OneToOneField(Employee, on_delete=models.CASCADE)
     department = models.ForeignKey(
         Department, on_delete=models.SET_NULL, null=True, blank=True)
+    role = models.ForeignKey(
+        JobTitle, on_delete=models.SET_NULL, null=True, blank=True)
     basic_salary = models.DecimalField(
         default=0, max_digits=12, decimal_places=2)
     employee_no = models.CharField(
@@ -116,7 +118,8 @@ class PaymentDetail(models.Model):
 @receiver(post_save, sender=Employee)
 def create_employee_profile(sender, instance, created, **kwargs):
     if created:
-        WorkDetail.objects.create(employee=instance)
+        new_work = WorkDetail.objects.create(employee=instance)
+        new_work.employee_no = make_employee_id(new_work)
         PaymentDetail.objects.create(employee=instance)
     instance.workdetail.save()
     instance.paymentdetail.save()
