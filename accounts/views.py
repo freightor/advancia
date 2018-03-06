@@ -38,7 +38,7 @@ def login_view(request):
                 if hasattr(user,"merchant"):
                     pass
                     # return redirect("merchants:index")
-                return redirect("employers:employee_list")
+                return redirect("employers:dashboard")
     else:
         form = AuthenticationForm()
         user = auth.get_user(request)

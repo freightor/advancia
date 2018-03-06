@@ -47,7 +47,7 @@ class Department(BaseModel, ActiveModel):
 
 def admin_avatar_location(instance, filename):
     file_ext = os.path.splitext(filename)[1]
-    return "logos/admins/employer_{0}{1}".format(instance.id, file_ext)
+    return "employer_{0}/admins/{1}{2}".format(instance.employer.id, instance.id, file_ext)
 
 
 class Administrator(BaseModel, Profile):
@@ -58,6 +58,11 @@ class Administrator(BaseModel, Profile):
     user_type = models.CharField(max_length=10, default="employer")
 
 
+def headshot_location(instance, filename):
+    file_ext = os.path.splitext(filename)[1]
+    return "employer_{0}/employees/{1}{2}".format(instance.employer.id, instance.id, file_ext)
+
+
 class Employee(BaseModel, ActiveModel):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     first_name = models.CharField(max_length=50)
@@ -66,6 +71,7 @@ class Employee(BaseModel, ActiveModel):
     employer = models.ForeignKey(
         Employer, on_delete=models.CASCADE, null=True, blank=True)
     date_of_birth = models.DateField()
+    headshot = models.ImageField(upload_to=headshot_location, null=True, blank=True)
     GENDER_CHOICES = (
         ("M", "Male"),
         ("F", "Female"),

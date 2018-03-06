@@ -23,7 +23,11 @@
                             <div class="profile-img-wrap">
                                 <div class="profile-img">
                                     <a href="#">
-                                        <img class="avatar" src="images/user.jpg" alt="">
+                                        {% if employee.headshot %}
+                                        <img class="avatar" src="{{employee.headshot.url}}" alt="">
+                                        {% else %}
+                                        <img class="avatar" src="" alt="">
+                                        {% endif %}
                                     </a>
                                 </div>
                             </div>
@@ -53,6 +57,10 @@
                                             <li>
                                                 <span class="title">Birthday:</span>
                                                 <span class="text">{{employee.date_of_birth|date:"F d"}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="title">Age:</span>
+                                                <span class="text">{{employee.date_of_birth|timesince}}</span>
                                             </li>
                                             <li>
                                                 <span class="title">Address:</span>

@@ -6,17 +6,17 @@
     <div class="content container-fluid">
         <div id="add_employee">
             <div class="modal-header">
-                {% if employee %}
-                <h4 class="page-title">Edit Employee</h4>
+                {% if form.instance.pk %}
+                    <h4 class="page-title">Edit Employee</h4>
                 {% else %}
-                <h4 class="page-title">Add Employee</h4>
+                    <h4 class="page-title">Add Employee</h4>
                 {% endif %}
             </div>
             <div class="modal-body">
-                <form class="m-b-30" method="POST">
+                <form class="m-b-30" method="POST" enctype="multipart/form-data">
                     {% include "split_form_address.html" %}
                     <div class="m-t-20 text-center">
-                        <button class="btn btn-primary">Create Employee</button>
+                        <button class="btn btn-primary">Save Employee</button>
                     </div>
                 </form>
                 </div>

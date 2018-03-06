@@ -4,7 +4,7 @@ from django.core.exceptions import PermissionDenied
 
 def admin_staff_required(function):
     def wrap(request, *args, **kwargs):
-        if request.user.employee.role == "admin":
+        if request.user.administrator.role == "admin":
             return function(request, *args, **kwargs)
         raise PermissionDenied
 
