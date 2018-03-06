@@ -10,7 +10,6 @@ from django.conf import settings
 
 
 class Payroll(BaseModel):
-    date = models.DateField(auto_now_add=True)
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
     basic_salary = models.DecimalField(
         null=True, blank=True, max_digits=12, decimal_places=2)
@@ -27,11 +26,11 @@ class Payroll(BaseModel):
 
     @property
     def month(self):
-        return self.date.month
+        return self.created_at.month
 
     @property
     def year(self):
-        return self.date.year
+        return self.created_at.year
 
     @property
     def name(self):
