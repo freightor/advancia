@@ -33,7 +33,7 @@ class Employer(BaseModel, ActiveModel):
     logo = models.ImageField(upload_to=logo_location, null=True, blank=True)
     name = models.CharField(max_length=255)
     address = models.ForeignKey(Address, on_delete=models.CASCADE)
-    description = models.TextField()
+    description = models.CharField(max_length=255)
 
 
 class JobTitle(models.Model):
