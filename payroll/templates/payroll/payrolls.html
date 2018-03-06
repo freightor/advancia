@@ -9,19 +9,19 @@
                     <h4 class="page-title">Employee Payroll</h4>
                 </div>
                 <div class="col-xs-8 text-right m-b-30">
-                    <a href="{% url 'employers:gen_pay' %}" class="btn btn-primary rounded pull-right">
+                    <a href="{% url 'payroll:gen_pay' %}" class="btn btn-primary rounded pull-right">
                         <i class="fa fa-plus"></i> Generate Payrolls</a>
                 </div>
             </div>
             <div class="row filter-row">
                 <div class="col-sm-3 col-md-2 col-xs-6">
-                    <div class="form-group form-focus">
+                    <div class="form-group ">
                         <label class="control-label">Employee Name</label>
                         <input type="text" class="form-control floating" />
                     </div>
                 </div>
                 <div class="col-sm-3 col-md-2 col-xs-6">
-                    <div class="form-group form-focus select-focus">
+                    <div class="form-group  select-focus">
                         <label class="control-label">Role</label>
                         <select class="select floating">
                             <option value=""> -- Select -- </option>
@@ -31,7 +31,7 @@
                     </div>
                 </div>
                 <div class="col-sm-3 col-md-2 col-xs-6">
-                    <div class="form-group form-focus select-focus">
+                    <div class="form-group  select-focus">
                         <label class="control-label">Leave Status</label>
                         <select class="select floating">
                             <option value=""> -- Select -- </option>
@@ -42,7 +42,7 @@
                     </div>
                 </div>
                 <div class="col-sm-3 col-md-2 col-xs-6">
-                    <div class="form-group form-focus">
+                    <div class="form-group ">
                         <label class="control-label">From</label>
                         <div class="cal-icon">
                             <input class="form-control floating datetimepicker" type="text">
@@ -50,7 +50,7 @@
                     </div>
                 </div>
                 <div class="col-sm-3 col-md-2 col-xs-6">
-                    <div class="form-group form-focus">
+                    <div class="form-group ">
                         <label class="control-label">To</label>
                         <div class="cal-icon">
                             <input class="form-control floating datetimepicker" type="text">

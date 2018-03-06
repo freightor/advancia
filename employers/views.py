@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from accounts.forms import SignUpForm
-from employers.models import Employee, Employer, WorkDetail, PaymentDetail, Payroll, Administrator, Department
+from employers.models import Employee, Employer, WorkDetail, PaymentDetail,Administrator, Department
 from employers.forms import AddressForm, EmployeeForm, EmployerForm, DepartmentForm, WorkDetailForm, PaymentDetailForm, AdministratorForm
 from common.decorators import admin_staff_required
 
@@ -17,7 +17,6 @@ def dashboard(request):
 
 
 @login_required
-@admin_staff_required
 def admin_list(request):
     employer = request.user.administrator.employer
     admins = Administrator.objects.filter(employer=employer)
@@ -224,22 +223,27 @@ def new_admin(request):
         form = SignUpForm()
     return render(request, "employers/new_admin.html", {"form": form})
 
-
 @login_required
 @admin_staff_required
-def generate_payrolls(request):
+def edit_admin(request,pk):
     employer = request.user.administrator.employer
-    for employee in Employee.objects.filter(employer=employer, active=True):
-        Payroll.objects.create(employee=employee)
-    return redirect("employers:payrolls")
-
+    obj = get_object_or_404(Administrator.objects.filter(employer=employer),pk=pk)
+    if request.method == "POST":
+        form = SignUpForm(request.POST, instance=obj.user,prefix="form")
+        admin = AdministratorForm(request.POST,request.FILES,instance=obj,prefix="admin")
+        if form.is_valid() and admin.is_valid():
+            admin.save(commit=False)
+            admin.edited_by = request.user
+            form.save()    
+            return redirect("employers:admins")
+    else:
+        form = SignUpForm(instance=obj.user,prefix="form")
+        admin = AdministratorForm(instance=obj,prefix="admin")
+    return render(request, "employers/new_admin.html", {"form": form,"admin":admin})
 
 @login_required
-def payroll_list(request):
-    payrolls = Payroll.objects.all()
-    return render(request, "employers/payrolls.html", {"payrolls": payrolls})
+def admin_profile(request,pk):
+    employer = request.user.administrator.employer
+    admin = get_object_or_404(Administrator.objects.filter(employer=employer),pk=pk)
+    return render(request,"employers/profile.html",{"admin":admin})
 
-
-@login_required
-def generate_payslips(request):
-    return render(request, "employers/payslips.html")

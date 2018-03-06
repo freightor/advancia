@@ -1,17 +1,28 @@
 {% extends "employer_base.html" %} 
 {% load static %} 
 {% load widget_tweaks %} 
-{% block title %}New Admin {% endblock%} 
+{% block title %}
+    {% if form.instance.pk %}
+        Add Admin
+    {% else %}
+        Edit Admin
+    {% endif %}
+{% endblock%} 
 {% block content %}
 <div class="page-wrapper">
     <div class="content container-fluid">
         <div id="add_employee">
             <div class="modal-header">
-                <h4 class="modal-title"> Add Admin</h4>
+                {% if form.instance.pk %}
+                    <h4 class="modal-title"> Add Admin</h4>
+                {% else %}
+                    <h4 class="modal-title"> Edit Admin</h4>
+                {% endif %}
             </div>
             <div class="modal-body">
-                <form method="POST">
+                <form method="POST" enctype="multipart/form-data">
                     {% include "form.html" %}
+                    {% include "admin.html" %}
                     <div class="form-group text-center">
                         <button class="btn btn-primary btn-block account-btn" type="submit">Add</button>
                     </div>

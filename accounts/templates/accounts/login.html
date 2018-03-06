@@ -17,7 +17,7 @@
                     {% csrf_token %}
                     {% for hidden in form.hidden_fields %} {{ hidden }} {% endfor %}
                     {% for field in form.visible_fields %}
-                        <div class="form-group form-focus">
+                        <div class="form-group ">
                             <label class="control-label" for="{{ field.id_for_label }}">
                                 {{ field.label }}
                             </label>

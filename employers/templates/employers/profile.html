@@ -1,0 +1,180 @@
+{% extends "employer_base.html" %}
+{% load humanize %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+    <div class="page-wrapper">
+        <div class="content container-fluid">
+            <div class="row">
+                <div class="col-sm-8">
+                    <h4 class="page-title">Admin Profile</h4>
+                </div>
+
+                <div class="col-sm-4 text-right m-b-30">
+                    <a href="{% url 'employers:edit_admin' pk=admin.pk %}" class="btn btn-primary rounded">
+                        <i class="fa fa-plus"></i> Edit Profile</a>
+                </div>
+            </div>
+            <div class="card-box">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="profile-view">
+                            <div class="profile-img-wrap">
+                                <div class="profile-img">
+                                    <a href="#">
+                                        {% if admin.avatar %}
+                                        <img class="avatar" src="{{admin.avatar.url}}" alt="">
+                                        {% else %}
+                                        <img class="avatar" src="" alt="">
+                                        {% endif %}
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="profile-basic">
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="profile-info-left">
+                                            <h3 class="user-name m-t-0 m-b-0">{{admin.user.get_full_name}}</h3>
+                                            <small class="text-muted">{{admin.role}}</small>
+                                            <div class="staff-id">Admin ID : {{admin.pk}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <ul class="personal-info">
+                                            <li>
+                                                <span class="title">Phone:</span>
+                                                <span class="text">
+                                                    <a href="">{{admin.user.email}}</a>
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span class="title">Email:</span>
+                                                <span class="text">
+                                                    <a href="">{{admin.user.email}}</a>
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span class="title">Birthday:</span>
+                                                <span class="text">{{admin.user.email}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="title">Age:</span>
+                                                <span class="text">{{admin.user.email}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="title">Address:</span>
+                                                <span class="text">{{admin.user.email}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="title">Gender:</span>
+                                                <span class="text">{{admin.user.email}}</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="card-box m-b-0">
+                        <h3 class="card-title">Advancia Payments</h3>
+                        <div class="skills">
+                            <span>Jumia</span>
+                            <span>Jumia</span>
+                            <span>Kilimall</span>
+                            <span>Jumia</span>
+                            <span>Kilimall</span>
+                            <span>Kilimall</span>
+                            <span>Kilimall</span>
+                            <span>Kilimall</span>
+                            <span>Jumia</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="card-box">
+                        <h3 class="card-title">Work Details</h3>
+                        <div class="experience-box">
+                            <ul class="experience-list">
+                                <li>
+                                    <div class="experience-user">
+                                        <div class="before-circle"></div>
+                                    </div>
+                                    <div class="experience-content">
+                                        <div class="timeline-content">
+                                            <a href="#" class="name">Department</a>
+                                            <div>{{employee.workdetail.department}}</div>
+                                        </div>
+                                </li>
+                                <li>
+                                    <div class="experience-user">
+                                        <div class="before-circle"></div>
+                                    </div>
+                                    <div class="experience-content">
+                                        <div class="timeline-content">
+                                            <a href="#/" class="name">Salary</a>
+                                            <div>GHC {{employee.workdetail.basic_salary|intcomma}}</div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="experience-user">
+                                        <div class="before-circle"></div>
+                                    </div>
+                                    <div class="experience-content">
+                                        <div class="timeline-content">
+                                            <a href="#/" class="name">Date of Employment</a>
+                                            <div>{{employee.workdetail.date_of_employment}}</div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-box m-b-0">
+                        <h3 class="card-title">Payment Details</h3>
+                        <div class="experience-box">
+                            <ul class="experience-list">
+                                <li>
+                                    <div class="experience-user">
+                                        <div class="before-circle"></div>
+                                    </div>
+                                    <div class="experience-content">
+                                        <div class="timeline-content">
+                                            <a href="#/" class="name">Bonus</a>
+                                            <span class="time">GHc {{employee.paymentdetail.bonus|intcomma}}</span>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="experience-user">
+                                        <div class="before-circle"></div>
+                                    </div>
+                                    <div class="experience-content">
+                                        <div class="timeline-content">
+                                            <a href="#/" class="name">Allowances</a>
+                                            <span class="time">GHc {{employee.paymentdetail.allowances|intcomma}}</span>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="experience-user">
+                                        <div class="before-circle"></div>
+                                    </div>
+                                    <div class="experience-content">
+                                        <div class="timeline-content">
+                                            <a href="#/" class="name">Deductions</a>
+                                            <span class="time">GHc {{employee.paymentdetail.deductions|intcomma}}</span>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

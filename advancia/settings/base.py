@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
-
+from decimal import Decimal
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(
     os.path.dirname(os.path.abspath(__file__))))
@@ -32,7 +32,8 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     'website',
     'employers',
-    'accounts'
+    'accounts',
+    'payroll'
 ]
 INSTALLED_APPS = THIRD_PARTY_APPS+LOCAL_APPS+DJANGO_APPS
 
@@ -116,3 +117,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # LOGOUT_REDIRECT_URL = 'login'
 # LOGIN_REDIRECT_URL = 'shop:product_list'
+# Money Operation
+ONE_CENT = Decimal("0.01")
+SSF_EMPLOYEE_RATE = Decimal("0.10")
+SSF_EMPLOYER_RATE = Decimal("0.13")

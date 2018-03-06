@@ -14,19 +14,19 @@
             </div>
             <div class="row filter-row">
                 <div class="col-sm-3 col-xs-6">
-                    <div class="form-group form-focus">
+                    <div class="form-group ">
                         <label class="control-label">Admin ID</label>
                         <input type="text" class="form-control floating" />
                     </div>
                 </div>
                 <div class="col-sm-3 col-xs-6">
-                    <div class="form-group form-focus">
+                    <div class="form-group ">
                         <label class="control-label">Admin Name</label>
                         <input type="text" class="form-control floating" />
                     </div>
                 </div>
                 <div class="col-sm-3 col-xs-6">
-                    <div class="form-group form-focus select-focus">
+                    <div class="form-group  select-focus">
                         <label class="control-label">Designation</label>
                         <select class="select floating">
                             <option value="">Select Designation</option>
@@ -46,7 +46,7 @@
                     <div class="col-md-4 col-sm-4 col-xs-6 col-lg-3">
                         <div class="profile-widget">
                             <div class="profile-img">
-                                <a href="profile.html">
+                                <a href="{% url 'employers:admin_profile' pk=admin.pk %}">
                                     <img class="avatar" src="" alt="admin">
                                 </a>
                             </div>
@@ -56,7 +56,7 @@
                                 </a>
                                 <ul class="dropdown-menu pull-right">
                                     <li>
-                                        <a href="#" data-toggle="modal" data-target="#edit_employee">
+                                        <a href="{% url 'employers:edit_admin' pk=admin.pk %}">
                                             <i class="fa fa-pencil m-r-5"></i> Edit</a>
                                     </li>
                                     <li>
@@ -66,7 +66,7 @@
                                 </ul>
                             </div>
                             <h4 class="user-name m-t-10 m-b-0 text-ellipsis">
-                                <a href="profile.html">{{admin.user.get_full_name}}</a>
+                                <a href="{% url 'employers:admin_profile' pk=admin.pk %}">{{admin.user.get_full_name}}</a>
                             </h4>
                             <div class="small text-muted">{{admin.role}}</div>
                         </div>

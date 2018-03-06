@@ -22,7 +22,9 @@ def get_tax_data(url):
     return tax_dict
 
 
-def get_tax(amount, tax_rates):
+def get_tax(amount):
+    amount = Decimal(amount)
+    tax_rates = get_tax_data("http://www.gra.gov.gh/index.php/tax-information/income-tax")
     tax = 0
     for rate in tax_rates[:-1]:
         if amount <= rate[0]:
@@ -37,5 +39,4 @@ def get_tax(amount, tax_rates):
 
 
 if __name__ == "__main__":
-    print(get_tax(3700, get_tax_data(
-        "http://www.gra.gov.gh/index.php/tax-information/income-tax")))
+    print(get_tax(1843))

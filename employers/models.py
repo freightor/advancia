@@ -1,6 +1,6 @@
 import os
 import uuid
-from decimal import Decimal, ROUND_HALF_UP
+from decimal import Decimal
 from django.db import models
 from django.dispatch import receiver
 from django.db.models.signals import post_save
@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from common.models import BaseModel, ActiveModel
 from common.utils import make_employee_id
 from accounts.models import Profile
+from common.gra import get_tax
 
 # Create your models here.
 
@@ -129,63 +130,3 @@ def create_employee_profile(sender, instance, created, **kwargs):
         PaymentDetail.objects.create(employee=instance)
     instance.workdetail.save()
     instance.paymentdetail.save()
-
-
-class Payroll(BaseModel):
-    date = models.DateField(auto_now_add=True)
-    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
-    basic_salary = models.DecimalField(
-        null=True, blank=True, max_digits=12, decimal_places=2)
-    bonus = models.DecimalField(
-        null=True, blank=True, max_digits=12, decimal_places=2)
-    allowances = models.DecimalField(
-        null=True, blank=True, max_digits=12, decimal_places=2)
-    deductions = models.DecimalField(
-        null=True, blank=True, max_digits=12, decimal_places=2)
-
-    @property
-    def employer(self):
-        return self.employee.employer
-
-    @property
-    def month(self):
-        return self.date.month
-
-    @property
-    def year(self):
-        return self.date.year
-
-    @property
-    def name(self):
-        return "{0}_{1}".format(self.month, self.year)
-
-    @property
-    def gross_salary(self):
-        return self.basic_salary + self.bonus + self.allowances
-
-    @property
-    def ssf_employee(self):
-        return Decimal(self.gross_salary * Decimal('0.05')).quantize(Decimal('.01'))
-
-    @property
-    def ssf_employer(self):
-        return Decimal(self.gross_salary * Decimal('0.3')).quantize(Decimal('.01'))
-
-    @property
-    def taxable_income(self):
-        return self.gross_salary - self.ssf_employee
-
-    @property
-    def paye(self):
-        return Decimal(self.taxable_income * Decimal('0.14')).quantize(Decimal('.01'))
-
-    @property
-    def net_salary(self):
-        return self.taxable_income - self.deductions
-
-    def save(self, *args, **kwargs):
-        self.basic_salary = self.employee.workdetail.basic_salary
-        self.allowances = self.employee.paymentdetail.allowances
-        self.bonus = self.employee.paymentdetail.bonus
-        self.deductions = self.employee.paymentdetail.deductions
-        super().save(*args, **kwargs)
