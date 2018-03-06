@@ -28,6 +28,7 @@ urlpatterns = [
     path("accounts/", include("accounts.urls", namespace="accounts")),
     path("employer/", include("employers.urls", namespace="employers")),
     path("payroll/", include("payroll.urls", namespace="payroll")),
+    path("stores/", include("stores.urls", namespace="stores")),
     path("password_reset/", auth_views.password_reset, {
          "template_name": "accounts/password_reset.html"}, name="password_reset"),
     path("password_reset/done/", auth_views.password_reset_done,

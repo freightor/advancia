@@ -1,5 +1,6 @@
 import string
 import random
+import uuid
 
 def make_employee_id(instance):
     Klass = instance.__class__
@@ -7,3 +8,6 @@ def make_employee_id(instance):
     if Klass.objects.filter(employee_no=new_code).exists():
         return make_employee_id(instance)
     return new_code
+
+def make_ref():
+    return uuid.uuid1().hex.upper()
