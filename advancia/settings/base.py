@@ -33,7 +33,8 @@ LOCAL_APPS = [
     'website',
     'employers',
     'accounts',
-    'payroll'
+    'payroll',
+    'stores'
 ]
 INSTALLED_APPS = THIRD_PARTY_APPS+LOCAL_APPS+DJANGO_APPS
 
