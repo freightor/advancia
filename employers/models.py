@@ -63,7 +63,7 @@ class Administrator(BaseModel, Profile):
 
 def headshot_location(instance, filename):
     file_ext = os.path.splitext(filename)[1]
-    return "employees/{0}".format(uuid.uuid1().hex, file_ext)
+    return "employees/{0}{1}".format(uuid.uuid1().hex, file_ext)
 
 
 class Employee(BaseModel, ActiveModel):
