@@ -25,11 +25,10 @@ class Address(models.Model):
 
 def logo_location(instance, filename):
     file_ext = os.path.splitext(filename)[1]
-    return "logos/employer_{0}{1}".format(instance.inc, file_ext)
+    return "logos/{0}{1}".format(uuid.uuid1().hex, file_ext)
 
 
 class Employer(BaseModel, ActiveModel):
-    id = models.UUIDField(primary_key=True, unique=True, default=uuid.uuid4, editable=False)
     logo = models.ImageField(upload_to=logo_location, null=True, blank=True)
     name = models.CharField(max_length=255)
     address = models.ForeignKey(Address, on_delete=models.CASCADE)
@@ -48,7 +47,7 @@ class Department(BaseModel, ActiveModel):
 
 def admin_avatar_location(instance, filename):
     file_ext = os.path.splitext(filename)[1]
-    return "employer_{0}/admins/{1}{2}".format(instance.employer.inc, instance.id, file_ext)
+    return "admins/{0}{1}".format(uuid.uuid1().hex, file_ext)
 
 
 class Administrator(BaseModel, Profile):
@@ -61,11 +60,10 @@ class Administrator(BaseModel, Profile):
 
 def headshot_location(instance, filename):
     file_ext = os.path.splitext(filename)[1]
-    return "employer_{0}/employees/{1}{2}".format(instance.employer.id, instance.id, file_ext)
+    return "employees/{0}".format(uuid.uuid1().hex, file_ext)
 
 
 class Employee(BaseModel, ActiveModel):
-    id = models.UUIDField(primary_key=True, unique=True,default=uuid.uuid4, editable=False)
     first_name = models.CharField(max_length=50)
     middle_name = models.CharField(max_length=50, null=True, blank=True)
     last_name = models.CharField(max_length=50)
