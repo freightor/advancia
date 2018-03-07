@@ -1,10 +1,13 @@
 import os
 import uuid
+import datetime
 from decimal import Decimal
 from django.db import models
 from django.dispatch import receiver
+from django.db.models import Sum
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
+from django.conf import settings
 from common.models import BaseModel, ActiveModel
 from common.utils import make_employee_id
 from accounts.models import Profile
@@ -70,7 +73,8 @@ class Employee(BaseModel, ActiveModel):
     employer = models.ForeignKey(
         Employer, on_delete=models.CASCADE, null=True, blank=True)
     date_of_birth = models.DateField()
-    headshot = models.ImageField(upload_to=headshot_location, null=True, blank=True)
+    headshot = models.ImageField(
+        upload_to=headshot_location, null=True, blank=True)
     GENDER_CHOICES = (
         ("M", "Male"),
         ("F", "Female"),
@@ -93,6 +97,16 @@ class Employee(BaseModel, ActiveModel):
         if self.middle_name:
             return "{0} {1} {2}".format(self.first_name, self.middle_name, self.last_name)
         return "{0} {1}".format(self.first_name, self.last_name)
+
+    @property
+    def monthly_advancia_limit(self):
+        return self.payroll_set.last().net_salary * settings.ADVANCIA_LIMIT
+
+    @property
+    def monthly_advancia_total(self):
+        month = datetime.datetime.now().month
+        year = datetime.datetime.now().year
+        return self.transaction_set.filter(created_at__month=month, created_at__year=year).aggregate(Sum("amount"))
 
 
 class WorkDetail(models.Model):
