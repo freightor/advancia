@@ -36,6 +36,7 @@ class Employer(BaseModel, ActiveModel):
     name = models.CharField(max_length=255)
     address = models.ForeignKey(Address, on_delete=models.CASCADE)
     description = models.CharField(max_length=255)
+    payroll_date = models.IntegerField(default=29,null=True,blank=True)
 
 
 class JobTitle(models.Model):
@@ -99,13 +100,19 @@ class Employee(BaseModel, ActiveModel):
 
     @property
     def monthly_advancia_limit(self):
-        return self.payroll_set.last().net_salary * settings.ADVANCIA_LIMIT
+        if self.payroll_set.exists():
+            return self.payroll_set.last().net_salary * settings.ADVANCIA_LIMIT
+        return Decimal(0)
 
     @property
     def monthly_advancia_total(self):
         month = datetime.datetime.now().month
         year = datetime.datetime.now().year
-        return self.transaction_set.filter(created_at__month=month, created_at__year=year).aggregate(Sum("amount"))
+        total_dict = self.transaction_set.filter(created_at__month=month, created_at__year=year).aggregate(Sum("amount"))
+        if total_dict["amount__sum"]:
+            return total_dict["amount__sum"]
+        return Decimal(0)
+
 
 
 class WorkDetail(models.Model):

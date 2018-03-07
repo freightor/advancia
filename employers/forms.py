@@ -40,9 +40,13 @@ class PaymentDetailForm(forms.ModelForm):
 
 
 class EmployerForm(forms.ModelForm):
+    PAYROLL_DATE_CHOICES = [
+        (i,str(i)) for i in range(1,30)
+    ]
+    payroll_date = forms.TypedChoiceField(choices=PAYROLL_DATE_CHOICES,initial=29, coerce=int)
     class Meta:
         model = Employer
-        fields = ("name", "description", "logo")
+        fields = ("name", "description", "logo","payroll_date")
 
 
 class DepartmentForm(forms.ModelForm):

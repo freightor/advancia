@@ -20,6 +20,8 @@ class BaseModel(models.Model):
             return self.name
         if hasattr(self,"user"):
             return self.user.get_full_name()
+        if hasattr(self,"reference_code"):
+            return self.reference_code
 
 class ActiveModel(models.Model):
     active = models.BooleanField(default=False)
