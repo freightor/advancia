@@ -19,6 +19,18 @@ class Payroll(BaseModel):
         null=True, blank=True, max_digits=12, decimal_places=2)
     deductions = models.DecimalField(
         null=True, blank=True, max_digits=12, decimal_places=2)
+    gross_salary = models.DecimalField(
+        null=True, blank=True, max_digits=12, decimal_places=2)
+    ssf_employee = models.DecimalField(
+        null=True, blank=True, max_digits=12, decimal_places=2)
+    ssf_employer = models.DecimalField(
+        null=True, blank=True, max_digits=12, decimal_places=2)
+    taxable_income = models.DecimalField(
+        null=True, blank=True, max_digits=12, decimal_places=2)
+    paye = models.DecimalField(
+        null=True, blank=True, max_digits=12, decimal_places=2)
+    net_salary = models.DecimalField(
+        null=True, blank=True, max_digits=12, decimal_places=2)
 
     @property
     def employer(self):
@@ -36,33 +48,15 @@ class Payroll(BaseModel):
     def name(self):
         return "{0}_{1}".format(self.month, self.year)
 
-    @property
-    def gross_salary(self):
-        return self.basic_salary + self.bonus + self.allowances
-
-    @property
-    def ssf_employee(self):
-        return Decimal(self.gross_salary * settings.SSF_EMPLOYEE_RATE).quantize(settings.ONE_CENT)
-
-    @property
-    def ssf_employer(self):
-        return Decimal(self.gross_salary * settings.SSF_EMPLOYER_RATE).quantize(settings.ONE_CENT)
-
-    @property
-    def taxable_income(self):
-        return self.gross_salary - self.ssf_employee
-
-    @property
-    def paye(self):
-        return get_tax(self.taxable_income)
-
-    @property
-    def net_salary(self):
-        return self.taxable_income - self.deductions
-
     def save(self, *args, **kwargs):
         self.basic_salary = self.employee.workdetail.basic_salary
         self.allowances = self.employee.paymentdetail.allowances
         self.bonus = self.employee.paymentdetail.bonus
         self.deductions = self.employee.paymentdetail.deductions
+        self.gross_salary = self.basic_salary + self.bonus + self.allowances
+        self.ssf_employee = self.gross_salary * settings.SSF_EMPLOYEE_RATE
+        self.ssf_employer = self.gross_salary * settings.SSF_EMPLOYER_RATE
+        self.taxable_income = self.gross_salary - self.ssf_employee
+        self.paye = get_tax(self.taxable_income)
+        self.net_salary = self.taxable_income - self.deductions
         super().save(*args, **kwargs)
