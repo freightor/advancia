@@ -2,7 +2,6 @@ from django.shortcuts import render, get_object_or_404
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework.response import Response
 from employers.models import Employee, WorkDetail
 from transactions.models import Transaction
 
@@ -14,7 +13,7 @@ def run_transaction(request):
     if request.method == "POST":
         employee_num = request.POST.get("employee_no")
         amount = request.POST.get("amount")
-        store = request.POST.get("store")
+        store = request.user.store
         wk = get_object_or_404(WorkDetail, employee_no=employee_num)
         employee = wk.employee
         if employee and employee.active:
@@ -31,3 +30,11 @@ def run_transaction(request):
             data = {"message":"Failed! Not a valid Employee"}
         return Response(data=data)
 
+@api_view(["GET"])
+def tester(request):
+    store = request.user.storeuser.store
+    content = {
+        "user": unicode(request.user),
+        "store": unicode(request.user.storeuser.store)
+    }
+    return Response(content)

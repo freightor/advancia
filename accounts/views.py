@@ -5,6 +5,7 @@ from django.core.exceptions import ViewDoesNotExist
 from django.contrib.auth.forms import AuthenticationForm
 from accounts.forms import SignUpForm
 from employers.models import Administrator
+from stores.models import StoreUser
 # Create your views here.
 
 
@@ -20,6 +21,9 @@ def signup(request, user_type):
             if user_type == "employer":
                 Administrator.objects.create(user=user, role="admin",created_by=user)
                 return redirect("employers:new_employer")
+            elif user_type == "store":
+                StoreUser.objects.create(user=user, role="admin",created_by=user)
+                return redirect("stores:new_store")
             else:
                 raise ViewDoesNotExist
     else:
@@ -35,22 +39,19 @@ def login_view(request):
             user = authenticate(request, username=username,password=password)
             if user is not None:
                 login(request,user)
-                if hasattr(user,"merchant"):
-                    pass
-                    # return redirect("merchants:index")
+                if hasattr(user,"storeuser"):
+                    return redirect("stores:dashboard")
                 return redirect("employers:dashboard")
     else:
         form = AuthenticationForm()
         user = auth.get_user(request)
         if user.is_authenticated:
-            if hasattr(user, "merchant"):
-                pass
-                # return redirect("shop:product_list")
-            elif user.administrator.role == "admin":
-                return redirect("employers:employee_list")
+            if hasattr(user, "storeuser"):
+                return redirect("stores:dashboard")
+            elif hasattr(user, "administrator"):
+                return redirect("employers:dashboard")
             else:
-                pass
-                # return redirect("shop:shop_home")
+                raise ViewDoesNotExist
     return render(request,"accounts/login.html",{"form":form})
 
 def logout_view(request):

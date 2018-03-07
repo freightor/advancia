@@ -58,7 +58,6 @@ class Administrator(BaseModel, Profile):
         null=True, blank=True, upload_to=admin_avatar_location)
     employer = models.ForeignKey(
         Employer, on_delete=models.CASCADE, null=True, blank=True)
-    user_type = models.CharField(max_length=10, default="employer")
 
 
 def headshot_location(instance, filename):

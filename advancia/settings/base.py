@@ -28,7 +28,8 @@ DJANGO_APPS = [
 ]
 THIRD_PARTY_APPS = [
     'widget_tweaks',
-    'rest_framework'
+    'rest_framework',
+    'rest_framework.authtoken'
 ]
 LOCAL_APPS = [
     'website',
@@ -118,8 +119,15 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# LOGOUT_REDIRECT_URL = 'login'
-# LOGIN_REDIRECT_URL = 'shop:product_list'
+# REST_FRAMEWORK
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    )
+}
 
 # ADVANCIA
 # Money Operation

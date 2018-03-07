@@ -15,9 +15,9 @@ urlpatterns = [
     path("departments/<int:pk>/delete", views.delete_dept,name="delete_dept"),
     path("admins/add/", views.new_admin, name="new_admin"),
     path("employees/", views.employee_list, name="employee_list"),
-    path("employees/<uuid:pk>/", views.employee_detail, name="employee_detail"),
+    path("employees/<int:pk>/", views.employee_detail, name="employee_detail"),
     path("employees/add/", views.new_employee, name="new_employee"),
-    path("employees/<uuid:pk>/edit/", views.edit_employee, name="edit_employee"),
-    path("employees/<uuid:pk>/details/edit/", views.edit_details, name="edit_details"),
-    path("employees/<uuid:pk>/activate/", views.activate_employee, name="activate_employee")
+    path("employees/<int:pk>/edit/", views.edit_employee, name="edit_employee"),
+    path("employees/<int:pk>/details/edit/", views.edit_details, name="edit_details"),
+    path("employees/<int:pk>/activate/", views.activate_employee, name="activate_employee")
 ]
