@@ -27,7 +27,8 @@ DJANGO_APPS = [
     'django.contrib.humanize'
 ]
 THIRD_PARTY_APPS = [
-    'widget_tweaks'
+    'widget_tweaks',
+    'rest_framework'
 ]
 LOCAL_APPS = [
     'website',
@@ -119,7 +120,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # LOGOUT_REDIRECT_URL = 'login'
 # LOGIN_REDIRECT_URL = 'shop:product_list'
+
+# ADVANCIA
 # Money Operation
 ONE_CENT = Decimal("0.01")
 SSF_EMPLOYEE_RATE = Decimal("0.10")
 SSF_EMPLOYER_RATE = Decimal("0.13")
+ADVANCIA_LIMIT = Decimal("0.50")
