@@ -34,7 +34,7 @@
 					</a>
                 </div>
                 <div class="page-title-box pull-left">
-					<h3>{{request.user.administrator.employer.name}}</h3>
+					<h3>{{request.user.storeuser.store.name}}</h3>
                 </div>
 				<a id="mobile_btn" class="mobile_btn pull-left" href="#sidebar"><i class="fa fa-bars" aria-hidden="true"></i></a>
 				<ul class="nav navbar-nav navbar-right user-menu pull-right">
@@ -118,14 +118,14 @@
 							<span class="user-img"><img class="img-circle" src="{% static 'images/user.jpg' %}" width="40" alt="Admin">
 							<span class="status online"></span></span>
 							<span>{{request.user.first_name}}</span>
-							<small class="form-text text-muted">({{ request.user.administrator.role }})</small>
+							<small class="form-text text-muted">({{ request.user.storeuser.role }})</small>
 							<i class="caret"></i>
 						</a>
 						<ul class="dropdown-menu">
-							<li><a href="{% url 'employers:admin_profile' pk=request.user.administrator.pk %}">My Profile</a></li>
-							{% if request.user.administrator.role == "admin" %}
+							<li><a href="#">My Profile</a></li>
+							{% if request.user.storeuser.role == "admin" %}
 								<li>
-									<a href="{% url 'employers:edit_admin' pk=request.user.administrator.pk %}">Edit Profile</a>
+									<a href="{% url 'employers:edit_admin' pk=request.user.storeuser.pk %}">Edit Profile</a>
 								</li>
 								<li><a href="{% url 'employers:settings' %}">Settings</a></li>
 							{% endif %}

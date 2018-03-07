@@ -34,7 +34,7 @@ def run_transaction(request):
 def tester(request):
     store = request.user.storeuser.store
     content = {
-        "user": unicode(request.user),
-        "store": unicode(request.user.storeuser.store)
+        "user": str(request.user),
+        "store": str(request.user.storeuser.store)
     }
     return Response(content)

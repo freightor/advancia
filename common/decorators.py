@@ -13,10 +13,11 @@ def admin_staff_required(function):
     return wrap
 
 
-def admin_merchant_required(function):
+def admin_storeuser_required(function):
     def wrap(request, *args, **kwargs):
-        if request.user.merchant.role == "admin":
-            return function(request, *args, **kwargs)
+        if hasattr(request.user,"storeuser"):
+            if request.user.storeuser.role == "admin":
+                return function(request, *args, **kwargs)
         raise PermissionDenied
 
     wrap.__doc__ = function.__doc__
@@ -26,7 +27,7 @@ def admin_merchant_required(function):
 
 def employee_required(function):
     def wrap(request, *args, **kwargs):
-        if request.user.employee:
+        if hasattr(request.user, "administrator"):
             return function(request, *args, **kwargs)
         raise PermissionDenied
 

@@ -29,4 +29,4 @@ class StoreUser(BaseModel,Profile):
 @receiver(post_save, sender=StoreUser)
 def generate_store_token(sender, instance, created, **kwargs):
     if created:
-        Token.objects.create(user=instance)
+        Token.objects.create(user=instance.user)
