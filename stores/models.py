@@ -22,8 +22,8 @@ def storeuser_avatar(instance, filename):
     return "stores/{0}{1}".format(uuid.uuid1().hex, file_ext)
 
 
-class StoreUser(Profile):
-    store = models.ForeignKey(Store, on_delete=models.CASCADE)
+class StoreUser(BaseModel,Profile):
+    store = models.ForeignKey(Store, on_delete=models.CASCADE,null=True,blank=True)
     avatar = models.ImageField(upload_to=storeuser_avatar,null=True,blank=True)
 
 @receiver(post_save, sender=StoreUser)

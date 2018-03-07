@@ -24,7 +24,7 @@ def transaction_detail(request, pk):
 
 def new_store(request):
     if request.method == "POST":
-        form = StoreForm(request.POST, request.FILES, prefix="form")
+        form = StoreForm(request.POST, prefix="form")
         addr = AddressForm(request.POST, prefix="addr")
         if form.is_valid() and addr.is_valid():
             store = form.save(commit=False)
@@ -36,6 +36,6 @@ def new_store(request):
             store_user.save()
             return redirect("stores:dashboard")
     else:
-        form = StoreForm(request.POST, request.FILES, prefix="form")
-        addr = AddressForm(request.POST, prefix="addr")
+        form = StoreForm(prefix="form")
+        addr = AddressForm(prefix="addr")
     return render(request, "stores/new_store.html", {"form": form, "addr": addr})
