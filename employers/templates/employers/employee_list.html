@@ -52,6 +52,7 @@
                                 <th>Department</th>
                                 <th>Mobile</th>
                                 <th>Status</th>
+                                <th>Salary</th>
                                 <th class="text-right">Action</th>
                             </tr>
                         </thead>
@@ -69,8 +70,14 @@
                                     <td>{{employee.workdetail.employee_no}}</td>
                                     <td>{{employee.workdetail.department}}</td>
                                     <td>{{employee.address.phone}}</td>
-                                    <td>{{employee.active}}</td>
-                                    <td>{{employee.paymentdetail.salary}}</td>
+                                    <td>
+                                        {% if employee.active %}
+                                            <span class="fa fa-check-circle active-check"></span>
+                                        {% else %}
+                                            <span class="fa fa-times-circle inactive-check"></span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{employee.workdetail.basic_salary}}</td>
                                     <td class="text-right">
                                         <div class="dropdown">
                                             <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">

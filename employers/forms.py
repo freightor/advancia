@@ -53,3 +53,6 @@ class DepartmentForm(forms.ModelForm):
     class Meta:
         model = Department
         fields = ("name",)
+
+class FileUploadForm(forms.Form):
+    upload_file = forms.ClearableFileInput()

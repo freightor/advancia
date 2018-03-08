@@ -17,10 +17,7 @@
                                 <th>#</th>
                                 <th>Reference</th>
                                 <th>Amount</th>
-                                <th>Employer</th>
-                                <th>Status</th>
-                                <th>Status</th>
-                                <th>Status</th>
+                                <th>Order ID</th>
                                 <th class="text-right">Action</th>
                             </tr>
                         </thead>
@@ -28,7 +25,9 @@
                             {% for transaction in transactions %}
                             <tr>
                                 <td>{{forloop.counter}} .</td>
-                                <td>{{dept.name}}</td>
+                                <td>{{transaction.reference_code}}</td>
+                                <td>{{transaction.amount}}</td>
+                                <td>{{transaction.order_id}}</td>
                                 <td class="text-right">
                                     <div class="dropdown">
                                         <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -36,11 +35,11 @@
                                         </a>
                                         <ul class="dropdown-menu pull-right">
                                             <li>
-                                                <a href="{% url 'employers:edit_dept' pk=dept.pk %}">
+                                                <a href="">
                                                     <i class="fa fa-pencil m-r-5"></i> Edit</a>
                                             </li>
                                             <li>
-                                                <a href="{% url 'employers:delete_dept' pk=dept.pk %}" title="Delete">
+                                                <a href="" title="Delete">
                                                     <i class="fa fa-trash-o m-r-5"></i> Delete</a>
                                             </li>
                                         </ul>

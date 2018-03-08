@@ -16,7 +16,8 @@ def generate_payrolls(request):
 
 @login_required
 def payroll_list(request):
-    payrolls = Payroll.objects.all()
+    employer = request.user.administrator.employer
+    payrolls = Payroll.objects.filter(employee__employer=employer)
     return render(request, "payroll/payrolls.html", {"payrolls": payrolls})
 
 
