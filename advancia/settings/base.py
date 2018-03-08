@@ -29,7 +29,8 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = [
     'widget_tweaks',
     'rest_framework',
-    'rest_framework.authtoken'
+    'rest_framework.authtoken',
+    'corsheaders'
 ]
 LOCAL_APPS = [
     'website',
@@ -42,6 +43,7 @@ LOCAL_APPS = [
 INSTALLED_APPS = THIRD_PARTY_APPS+LOCAL_APPS+DJANGO_APPS
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -135,3 +137,6 @@ ONE_CENT = Decimal("0.01")
 SSF_EMPLOYEE_RATE = Decimal("0.10")
 SSF_EMPLOYER_RATE = Decimal("0.13")
 ADVANCIA_LIMIT = Decimal("0.50")
+
+# CORS
+CORS_ORIGIN_ALLOW_ALL = True

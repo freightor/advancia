@@ -250,4 +250,7 @@ def admin_profile(request,pk):
 @login_required
 @admin_staff_required
 def upload_users(request):
-    pass
+    if request.method == "POST":
+        form = FileUploadForm(request.POST,request.FILES)
+        if form.is_valid():
+            pass
