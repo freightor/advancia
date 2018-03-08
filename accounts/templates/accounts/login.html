@@ -36,7 +36,10 @@
                         <a href="{% url 'password_reset' %}">Forgot your password?</a>
                     </div>
                     <div class="text-center">
-                        <a href="{% url 'accounts:signup' user_type='employer' %}"> Dont Have an account? Sign Up</a>
+                        <a href="{% url 'accounts:signup' user_type='store' %}"> Sign Up (Store)</a>
+                    </div>
+                    <div class="text-center">
+                        <a href="{% url 'accounts:signup' user_type='employer' %}"> Sign Up (Employer)</a>
                     </div>
                 </form>
             </div>

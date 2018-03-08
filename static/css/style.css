@@ -1625,3 +1625,11 @@ table.table-inbox tbody tr.checked {background-color: #ffffcc;}
 @media only screen and (min-width: 310px) and (max-width: 359px) {
 	.account-box {width:300px;margin-bottom: 20px;}
 }
+.active-check {
+	color:#2CD329;
+	font-size:18px;
+}
+.inactive-check {
+	color:red;
+	font-size:18px;
+}

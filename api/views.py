@@ -14,6 +14,7 @@ def run_transaction(request):
     if request.method == "POST":
         employee_num = request.POST.get("employee_no")
         amount = Decimal(request.POST.get("amount"))
+        order_id = request.POST.get("order_id")
         store = request.user.storeuser.store
         wk = get_object_or_404(WorkDetail, employee_no=employee_num)
         employee = wk.employee
@@ -22,7 +23,8 @@ def run_transaction(request):
                 Transaction.objects.create(
                     employee=employee,
                     amount=amount,
-                    store=store
+                    store=store,
+                    order_id=order_id
                 )
                 data = {"message":"Transaction Succesful!"}
                 return Response(data=data,status=status.HTTP_202_ACCEPTED)

@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from accounts.forms import SignUpForm
 from employers.models import Employee, Employer, WorkDetail, PaymentDetail,Administrator, Department
-from employers.forms import AddressForm, EmployeeForm, EmployerForm, DepartmentForm, WorkDetailForm, PaymentDetailForm, AdministratorForm
+from employers.forms import AddressForm, EmployeeForm, EmployerForm, DepartmentForm, WorkDetailForm, PaymentDetailForm, AdministratorForm, FileUploadForm
 from common.decorators import admin_staff_required
 
 # Create your views here.
@@ -247,3 +247,7 @@ def admin_profile(request,pk):
     admin = get_object_or_404(Administrator.objects.filter(employer=employer),pk=pk)
     return render(request,"employers/profile.html",{"admin":admin})
 
+@login_required
+@admin_staff_required
+def upload_users(request):
+    pass
