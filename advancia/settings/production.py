@@ -2,8 +2,8 @@ from .base import *
 import os
 import dj_database_url
 
+ALLOWED_HOSTS = ["herokuapp.com"]
 DEBUG = False
-ALLOWED_HOSTS = [".herokuapp.com"]
 SECRET_KEY = os.environ.get('SECRET_KEY')
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 DATABASES = {
