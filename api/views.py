@@ -27,13 +27,11 @@ def run_transaction(request):
                     order_id=order_id
                 )
                 data = {"message":"Transaction Succesful!"}
-                return Response(data=data,status=status.HTTP_202_ACCEPTED)
             else:
                 data = {"message":"Failed! Monthly limit reached!"}
-                return Response(data=data,status=status.HTTP_401_UNAUTHORIZED)
         else:
             data = {"message":"Failed! Not a valid Employee"}
-            return Response(data=data,status=status.HTTP_404_NOT_FOUND)
+        return Response(data=data)
 
 @api_view(["GET"])
 def tester(request):
