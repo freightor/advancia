@@ -1,7 +1,7 @@
 from .base import *
 import os
 
-DEBUG = bool(os.environ.get("DB_DEBUG",True))
+DEBUG = True
 SECRET_KEY = os.environ.get('SECRET_KEY')
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
