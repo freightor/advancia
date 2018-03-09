@@ -140,3 +140,4 @@ ADVANCIA_LIMIT = Decimal("0.50")
 
 # CORS
 CORS_ORIGIN_ALLOW_ALL = True
+CORS_URLS_REGEX = r'^/api/.*$'
