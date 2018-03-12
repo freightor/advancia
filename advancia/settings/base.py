@@ -139,6 +139,8 @@ ADVANCIA_LIMIT = Decimal("0.50")
 
 # Advancia OTP
 OTP_TOTP_ISSUER = 'Advancia Inc.'
+TOTP_TOKEN_VALIDITY = 60
+TOTP_TOKEN_DIGITS = 6
 
 # Twilio Settings
 TWILIO_ACCOUNT_SID = os.environ.get("TWILIO_ACCOUNT_SID")
