@@ -42,22 +42,6 @@ def verify_transaction(request):
                     store=store,
                     order_id=order_id
                 )
-<<<<<<< HEAD
-                data = {"message":"Transaction Succesful!"}
-            else:
-                data = {"message":"Failed! Monthly limit reached!"}
-        else:
-            data = {"message":"Failed! Not a valid Employee"}
-        return Response(data=data)
-
-@api_view(["GET"])
-def tester(request):
-    content = {
-        "user": str(request.user),
-        "store": str(request.user.storeuser.store)
-    }
-    return Response(content)
-=======
                 request.session.pop("employee")
                 data = {"message": "Transaction Succesful!"}
             else:
@@ -65,4 +49,3 @@ def tester(request):
         else:
             data = {"message": "Wrong Code, Try Again!"}
         return Response(data=data)
->>>>>>> development
