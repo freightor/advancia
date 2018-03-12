@@ -30,7 +30,9 @@ THIRD_PARTY_APPS = [
     'widget_tweaks',
     'rest_framework',
     'rest_framework.authtoken',
-    'corsheaders'
+    'corsheaders',
+    'django_otp',
+    'django_otp.plugins.otp_totp',
 ]
 LOCAL_APPS = [
     'website',
