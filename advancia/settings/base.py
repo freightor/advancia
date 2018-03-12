@@ -148,7 +148,7 @@ CORS_URLS_REGEX = r'^/api/.*$'
 
 # Advancia OTP
 OTP_TOTP_ISSUER = 'Advancia Inc.'
-TOTP_TOKEN_VALIDITY = 90
+TOTP_TOKEN_VALIDITY = 120
 TOTP_TOKEN_DIGITS = 6
 
 # Twilio Settings
