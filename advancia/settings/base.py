@@ -37,7 +37,8 @@ LOCAL_APPS = [
     'accounts',
     'payroll',
     'stores',
-    'transactions'
+    'transactions',
+    'otp'
 ]
 INSTALLED_APPS = THIRD_PARTY_APPS+LOCAL_APPS+DJANGO_APPS
 
@@ -139,7 +140,7 @@ ADVANCIA_LIMIT = Decimal("0.50")
 
 # Advancia OTP
 OTP_TOTP_ISSUER = 'Advancia Inc.'
-TOTP_TOKEN_VALIDITY = 60
+TOTP_TOKEN_VALIDITY = 90
 TOTP_TOKEN_DIGITS = 6
 
 # Twilio Settings

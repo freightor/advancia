@@ -8,22 +8,22 @@ from django_otp.oath import TOTP
 from django_otp.util import random_hex, hex_validator
 from employers.models import Employee
 
-
 class TOTPDevice(Device):
     """
     Manage generation and verification of OTP tokens for employees
     """
-    key = models.CharField(max_length=40, default=random_hex(
-        30), validators=[hex_validator], unique=True)
+    key = models.CharField(max_length=60, default=random_hex(20), validators=[hex_validator], unique=True)
     last_verified_counter = models.BigIntegerField(default=-1)
-    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    user = models.ForeignKey(Employee, on_delete=models.CASCADE)
     verified = models.BooleanField(default=False)
     step = settings.TOTP_TOKEN_VALIDITY
-    digits = settings.TOTP_DIGITS
+    digits = settings.TOTP_TOKEN_DIGITS
 
     @property
     def bin_key(self):
-        return unhexlify(self.key.encode())
+        if isinstance(self.key,str):
+            return unhexlify(self.key[2:-1].encode())
+        return unhexlify(self.key)
 
     def totp_object(self):
         # Create TOTP object
@@ -41,15 +41,9 @@ class TOTPDevice(Device):
         return token
 
     def verify_token(self, token, tolerance=0):
-        # convert token to integer
-        try:
-            token = int(token)
-        except ValueError:
-            # Return False if token cannot be converted to integer
-            self.verified = False
-        else:
-            totp = self.totp_object()
-            if totp.verify(token, tolerance=tolerance):
-                self.verified = True
-                self.save()
+        totp = self.totp_object()
+        if totp.t() > self.last_verified_counter and totp.verify(token, tolerance=tolerance):
+            self.last_verified_counter = totp.t()
+            self.verified = True
+            self.save()
         return self.verified
