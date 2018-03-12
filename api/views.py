@@ -29,13 +29,13 @@ def run_transaction(request):
 @api_view(["POST"])
 def verify_transaction(request):
     if request.method == "POST":
-        token = request.POST.get("token")
+        otp_code = request.POST.get("token")
         amount = Decimal(request.POST.get("amount"))
         order_id = request.POST.get("order_id")
         store = request.user.storeuser.store
         employee = get_object_or_404(Employee, pk=int(request.session.get("employee")))
         last_token = employee.totpdevice_set.last()
-        if last_token.verify_token(token):
+        if last_token.verify_token(int(otp_code)):
             if employee.monthly_advancia_limit - employee.monthly_advancia_total >= amount:
                 Transaction.objects.create(
                     employee=employee,
