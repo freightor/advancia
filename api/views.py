@@ -18,8 +18,8 @@ def run_transaction(request):
         wk = get_object_or_404(WorkDetail, employee_no=employee_num)
         if wk.employee:
             request.session["employee"] = wk.employee.id
-            s_code = TOTPDevice.objects.create(user=wk.employee).generate_token()
-            send_sms("+2330201415087",s_code)
+            totp = TOTPDevice.objects.create(user=wk.employee)
+            send_sms("+2330201415087",totp.generate_token())
             data = {"message":"Verification sent!"}
         else:
             data = {"message": "Failed! Not a valid Employee"}
@@ -29,13 +29,13 @@ def run_transaction(request):
 @api_view(["POST"])
 def verify_transaction(request):
     if request.method == "POST":
-        otp_code = request.POST.get("token")
+        otp_code = int(request.POST.get("token"))
         amount = Decimal(request.POST.get("amount"))
         order_id = request.POST.get("order_id")
         store = request.user.storeuser.store
         employee = get_object_or_404(Employee, pk=int(request.session.get("employee")))
         last_token = employee.totpdevice_set.last()
-        if last_token.verify_token(int(otp_code)):
+        if last_token.verify_token(otp_code):
             if employee.monthly_advancia_limit - employee.monthly_advancia_total >= amount:
                 Transaction.objects.create(
                     employee=employee,
