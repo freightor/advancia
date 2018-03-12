@@ -56,3 +56,10 @@ class DepartmentForm(forms.ModelForm):
 
 class FileUploadForm(forms.Form):
     upload_file = forms.ClearableFileInput()
+
+    def clean(self):
+        cleaned_data = super().clean()
+        upload_file = cleaned_data.get("upload_file")
+        if upload_file:
+            if upload_file.size:
+                pass

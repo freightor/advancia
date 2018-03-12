@@ -47,6 +47,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django_otp.middleware.OTPMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -135,3 +136,15 @@ ONE_CENT = Decimal("0.01")
 SSF_EMPLOYEE_RATE = Decimal("0.10")
 SSF_EMPLOYER_RATE = Decimal("0.13")
 ADVANCIA_LIMIT = Decimal("0.50")
+
+# Advancia OTP
+OTP_TOTP_ISSUER = 'Advancia Inc.'
+
+# Twilio Settings
+TWILIO_ACCOUNT_SID = os.environ.get("TWILIO_ACCOUNT_SID")
+TWILIO_AUTH_TOKEN = os.environ.get("TWILIO_AUTH_TOKEN")
+TWILIO_NUMBER = os.environ.get("TWILIO_NUMBER")
+TWILIO_TEST_TO = os.environ.get("TWILIO_TEST_TO")
+TWILIO_TEST_FROM = os.environ.get("TWILIO_TEST_FROM")
+TWILIO_TEST_ACCOUNT_SID = os.environ.get("TWILIO_TEST_ACCOUNT_SID")
+TWILIO_TEST_AUTH_TOKEN = os.environ.get("TWILIO_TEST_AUTH_TOKEN")
