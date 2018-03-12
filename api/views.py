@@ -33,8 +33,9 @@ def verify_transaction(request):
         amount = Decimal(request.POST.get("amount"))
         order_id = request.POST.get("order_id")
         store = request.user.storeuser.store
-        employee = get_object_or_404(Employee, pk=request.session.get("employee"))
-        if employee.totpdevice_set.last().verify_token(token):
+        employee = get_object_or_404(Employee, pk=int(request.session.get("employee")))
+        last_token = employee.totpdevice_set.last()
+        if last_token.verify_token(token):
             if employee.monthly_advancia_limit - employee.monthly_advancia_total >= amount:
                 Transaction.objects.create(
                     employee=employee,
