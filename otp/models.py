@@ -9,12 +9,16 @@ from django_otp.util import random_hex, hex_validator
 from employers.models import Employee
 
 
+def default_key():
+    return random_hex(20)
+
+
 class TOTPDevice(Device):
     """
     Manage generation and verification of OTP tokens for employees
     """
-    key = models.CharField(max_length=60, default=random_hex(
-        20), validators=[hex_validator], unique=True)
+    key = models.CharField(max_length=60, default=default_key, validators=[
+                           hex_validator], unique=True)
     last_verified_counter = models.BigIntegerField(default=-1)
     user = models.ForeignKey(Employee, on_delete=models.CASCADE)
     verified = models.BooleanField(default=False)
