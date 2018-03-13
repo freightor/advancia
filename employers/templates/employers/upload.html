@@ -1,0 +1,22 @@
+{% extends "employer_base.html" %} 
+{% load static %} {% load widget_tweaks %} 
+{% block title %}Upload {% endblock%} 
+{% block content %}
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div id="add_department">
+            <div class="modal-header">
+                <h4 class="modal-title"> Upload Users</h4>
+            </div>
+            <div class="modal-body">
+                <form method="POST" enctype="multipart/form-data">
+                    {% include "form.html" %}
+                    <div class="m-t-20 text-center">
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

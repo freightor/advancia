@@ -1,4 +1,6 @@
 import datetime as dt
+import csv
+from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -250,4 +252,13 @@ def admin_profile(request,pk):
 @login_required
 @admin_staff_required
 def upload_users(request):
-    pass
+    if request.method == "POST":
+        form = FileUploadForm(request.POST,request.FILES)
+        if form.is_valid():
+            csv_file = request.FILES.get("upload_file")
+            file_data = csv_file.read().decode("utf-8").split("\n")
+            reader = csv.DictReader(file_data)
+            return HttpResponse(reader)
+    else:
+        form = FileUploadForm()
+    return render(request,"employers/upload.html",{"form":form})

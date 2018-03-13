@@ -55,11 +55,13 @@ class DepartmentForm(forms.ModelForm):
         fields = ("name",)
 
 class FileUploadForm(forms.Form):
-    upload_file = forms.ClearableFileInput()
+    upload_file = forms.FileField()
 
-    def clean(self):
-        cleaned_data = super().clean()
-        upload_file = cleaned_data.get("upload_file")
+    def clean_upload_file(self):
+        upload_file = self.cleaned_data.get("upload_file")
         if upload_file:
-            if upload_file.size:
-                pass
+            if upload_file.size > 2.5*1024*1024:
+                raise forms.ValidationError("File size must be 2.5MB or less!")
+            if not upload_file.name.endswith(".csv"):
+                raise forms.ValidationError("Only csv files accepted!")
+        return upload_file
