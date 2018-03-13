@@ -48,7 +48,7 @@ class TOTPDevice(Device):
 
     def verify_token(self, token):
         totp = self.totp_object()
-        if not self.verified and totp.t() > self.last_verified_counter and totp.verify(token, tolerance=0):
+        if not self.verified and totp.t() > self.last_verified_counter and totp.verify(token, tolerance=1):
             self.last_verified_counter = totp.t()
             self.verified = True
             self.save()
