@@ -30,6 +30,8 @@ def resend_code(request):
     employee = get_object_or_404(Employee,pk=request.session["employee"])
     if employee:
         s_code = employee.totpdevice_set.last().generate_token()
+        if s_code.verified:
+            s_code = TOTPDevice.objects.create(user=employee).generate_token()
         send_sms("+2330201415087",s_code)
         data = {"message":"Verification sent!"}
     else:

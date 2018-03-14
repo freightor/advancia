@@ -27,7 +27,9 @@ class TOTPDevice(Device):
 
     @property
     def bin_key(self):
-        return unhexlify(self.key)
+        if isinstance(self.key,(bytes,bytearray)):
+            return unhexlify(self.key)
+        return unhexlify(self.key[2:-1].encode())
 
     def totp_object(self):
         # Create TOTP object
