@@ -47,11 +47,12 @@ def verify_transaction(request):
         store = request.user.storeuser.store
         wk = get_object_or_404(WorkDetail, employee_no=employee_num)
         if wk:
-            last_token = wk.employee.totpdevice_set.last()
+            employee = wk.employee
+            last_token = employee.totpdevice_set.last()
             if last_token.verify_token(otp_code):
                 if employee.monthly_advancia_limit - employee.monthly_advancia_total >= amount:
                     Transaction.objects.create(
-                        employee=wk.employee,
+                        employee=employee,
                         amount=amount,
                         store=store,
                         order_id=order_id
