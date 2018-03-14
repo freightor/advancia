@@ -48,18 +48,19 @@ def verify_transaction(request):
         wk = get_object_or_404(WorkDetail, employee_no=employee_num)
         if wk:
             last_token = wk.employee.totpdevice_set.last()
-        if last_token.verify_token(otp_code):
-            if employee.monthly_advancia_limit - employee.monthly_advancia_total >= amount:
-                Transaction.objects.create(
-                    employee=wk.employee,
-                    amount=amount,
-                    store=store,
-                    order_id=order_id
-                )
-                request.session.pop("employee")
-                data = {"message": "Transaction Succesful!"}
+            if last_token.verify_token(otp_code):
+                if employee.monthly_advancia_limit - employee.monthly_advancia_total >= amount:
+                    Transaction.objects.create(
+                        employee=wk.employee,
+                        amount=amount,
+                        store=store,
+                        order_id=order_id
+                    )
+                    data = {"message": "Transaction Succesful!"}
+                else:
+                    data = {"message":"Failed! Monthly limit reached!"}
             else:
-                data = {"message":"Failed! Monthly limit reached!"}
+                data = {"message": "Wrong Code, Try Again!"}
         else:
-            data = {"message": "Wrong Code, Try Again!"}
+            data = {"message": "Invalid Employee!"}
         return Response(data=data)
