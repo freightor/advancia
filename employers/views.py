@@ -1,4 +1,6 @@
 import datetime as dt
+import csv
+from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -253,4 +255,19 @@ def upload_users(request):
     if request.method == "POST":
         form = FileUploadForm(request.POST,request.FILES)
         if form.is_valid():
+<<<<<<< HEAD
             pass
+=======
+            csv_file = request.FILES.get("upload_file")
+            file_data = csv_file.read().decode("utf-8").split("\n")
+            lines = csv.DictReader(file_data)
+            return render(request,"employers/preview.html",{"lines":lines})
+    else:
+        form = FileUploadForm()
+    return render(request,"employers/upload.html",{"form":form})
+
+@login_required
+@admin_staff_required
+def save_uploaded_users(request):
+    pass
+>>>>>>> development

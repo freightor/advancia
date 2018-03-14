@@ -1,0 +1,51 @@
+{% extends "employer_base.html" %}
+{% block title %}Upload{% endblock %} 
+{% block content %}
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-responsive">
+                    <table class="table table-striped custom-table datatable">
+                        <thead>
+                            <tr>
+                                <th style="width:30%;">Name</th>
+                                <th>Department</th>
+                                <th>Mobile</th>
+                                <th>Status</th>
+                                <th>Salary</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for line in lines %}
+                                <tr>
+                                    <td>
+                                        <span class="avatar">{{line.first_name|first}}</span>
+                                        <h2>
+                                            <span>{{line.first_name}} {{line.last_name}}
+                                                <span>{{line.role}}</span>
+                                            </span>
+                                        </h2>
+                                    </td>
+                                    <td>{{line.department}}</td>
+                                    <td>{{line.phone}}</td>
+                                    <td>
+                                        {% if line.active %}
+                                            <span class="fa fa-check-circle active-check"></span>
+                                        {% else %}
+                                            <span class="fa fa-times-circle inactive-check"></span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{line.salary}}</td>
+                                </tr>
+                            {% empty %}
+                                <tr><p class="alert alert-danger">No data found!</p></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
