@@ -20,5 +20,5 @@ urlpatterns = [
     path("employees/<int:pk>/edit/", views.edit_employee, name="edit_employee"),
     path("employees/<int:pk>/details/edit/", views.edit_details, name="edit_details"),
     path("employees/<int:pk>/activate/", views.activate_employee, name="activate_employee"),
-    path("employees/upload/", views.upload_users, name="uploads")
+    path("employees/upload/", views.upload_users, name="upload")
 ]

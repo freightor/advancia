@@ -257,8 +257,13 @@ def upload_users(request):
         if form.is_valid():
             csv_file = request.FILES.get("upload_file")
             file_data = csv_file.read().decode("utf-8").split("\n")
-            reader = csv.DictReader(file_data)
-            return HttpResponse(reader)
+            lines = csv.DictReader(file_data)
+            return render(request,"employers/preview.html",{"lines":lines})
     else:
         form = FileUploadForm()
     return render(request,"employers/upload.html",{"form":form})
+
+@login_required
+@admin_staff_required
+def save_uploaded_users(request):
+    pass
