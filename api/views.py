@@ -17,7 +17,7 @@ def run_transaction(request):
         employee_num = request.POST.get("employee_no")
         wk = get_object_or_404(WorkDetail, employee_no=employee_num)
         if wk.employee:
-            totp = TOTPDevice.objects.create(user=wk.employee)
+            # totp = TOTPDevice.objects.create(user=wk.employee)
             # send_sms("+2330201415087",totp.generate_token())
             data = {"message":"Verification sent!"}
         else:
